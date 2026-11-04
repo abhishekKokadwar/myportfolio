@@ -76,7 +76,7 @@ function StackingProjectCard({
 
   const repoPath = project.githubUrl
     ? project.githubUrl.replace(/^https?:\/\/(www\.)?github\.com\//, "")
-    : `Abhishek86798/${project.slug}`;
+    : `abhishekKokadwar/${project.slug}`;
 
   const architectureNote = PROJECT_HIGHLIGHTS[project.slug] || null;
 

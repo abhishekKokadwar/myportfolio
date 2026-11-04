@@ -63,6 +63,9 @@ type CodolioResponse = {
         dailyActivityStatsResponse?: {
           submissionCalendar?: Record<string, number> | null;
         } | null;
+        contestActivityStats?: {
+          contestActivityList?: unknown[] | null;
+        } | null;
       }>;
     };
   };
@@ -74,7 +77,10 @@ export async function getCodingStats(): Promise<CodingStats> {
       next: { revalidate: REVALIDATE_SECONDS },
       headers: { Accept: "application/json" },
     });
-    if (!res.ok) return FALLBACK;
+    if (!res.ok) {
+      console.warn(`[codolio] HTTP ${res.status}; serving stats.json`);
+      return FALLBACK;
+    }
 
     const json = (await res.json()) as CodolioResponse;
     const raw = json.data?.platformProfiles?.platformProfiles;
@@ -85,6 +91,7 @@ export async function getCodingStats(): Promise<CodingStats> {
     let medium = 0;
     let hard = 0;
     let contestRating = FALLBACK.contestRating;
+    let contestsCount = FALLBACK.contestsCount;
     const dailySubmissions: Record<string, number> = {};
 
     for (const p of raw) {
@@ -97,6 +104,8 @@ export async function getCodingStats(): Promise<CodingStats> {
       }
       if (p.platform === "leetcode" && p.userStats?.currentRating) {
         contestRating = p.userStats.currentRating;
+        contestsCount =
+          p.contestActivityStats?.contestActivityList?.length ?? contestsCount;
       }
 
       // Aggregate daily submissions across all platforms (LeetCode, GfG, CodeStudio, CodeChef)
@@ -116,24 +125,39 @@ export async function getCodingStats(): Promise<CodingStats> {
       }
     }
 
-    if (total === 0) return FALLBACK;
+    if (total === 0) {
+      console.warn("[codolio] live response had zero questions; serving stats.json");
+      return FALLBACK;
+    }
 
-    // Ensure verified minimums for depth signals
+    // Streak / active days from the merged calendar (UTC days, consecutive dates)
+    const days = Object.keys(dailySubmissions).sort();
+    let longestStreak = 0;
+    let run = 0;
+    let prev = 0;
+    for (const d of days) {
+      const t = Date.parse(d);
+      run = prev && t - prev === 86_400_000 ? run + 1 : 1;
+      prev = t;
+      if (run > longestStreak) longestStreak = run;
+    }
+
     return {
-      total: Math.max(total, FALLBACK.total),
-      easy: Math.max(easy, FALLBACK.easy),
-      medium: Math.max(medium, FALLBACK.medium),
-      hard: Math.max(hard, FALLBACK.hard),
+      total,
+      easy,
+      medium,
+      hard,
       contestRating,
-      contestsCount: 29,
-      activeDays: FALLBACK.activeDays,
-      longestStreak: FALLBACK.longestStreak,
-      capturedAt: FALLBACK.capturedAt,
+      contestsCount,
+      activeDays: days.length,
+      longestStreak,
+      capturedAt: new Date().toISOString().slice(0, 7),
       isLive: true,
       profileUrl: CODOLIO_PROFILE,
       dailySubmissions,
     };
-  } catch {
+  } catch (err) {
+    console.warn("[codolio] fetch failed; serving stats.json:", err);
     return FALLBACK;
   }
 }

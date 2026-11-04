@@ -2,6 +2,7 @@ import { Activity } from "lucide-react";
 import { siteConfig } from "@/data/site.config";
 import { EmailAction } from "@/components/ui/email-action";
 import type { GitHubStats } from "@/lib/data/github";
+import { formatStamp } from "@/lib/format";
 
 function relativeTime(iso?: string): string {
   if (!iso) return "recently";
@@ -32,7 +33,7 @@ export function Hero({
       ? stats.weeklySparkline.slice(-52)
       : [3, 0, 0, 0, 2, 8, 10, 25, 8, 0, 1, 0, 1, 6, 24, 1, 3, 0, 1, 0, 0, 26, 43, 0, 0, 0, 2, 8, 3, 6, 1, 4, 0, 0, 8, 11, 19, 15, 0, 4, 1, 5, 3, 28, 29, 33, 0, 0, 0, 7, 6, 7, 73].slice(-52);
   const maxWeekly = Math.max(1, ...sparklineBars);
-  const updatedAt = stats?.updatedAt || "3h ago";
+  const updatedAt = stats?.updatedAt ? formatStamp(stats.updatedAt) : "—";
 
   return (
     <section className="relative flex min-h-[calc(100dvh-4.25rem)] md:min-h-[calc(100dvh-4.5rem)] flex-col justify-center px-6 py-12 md:px-12 md:py-16 bg-background overflow-hidden border-t-0">

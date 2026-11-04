@@ -60,7 +60,7 @@ export function Dashboard({
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-1 font-mono text-xs text-foreground-subtle transition-colors hover:text-accent"
               >
-                <span>github.com/Abhishek86798</span>
+                <span>github.com/abhishekKokadwar</span>
                 <ArrowUpRight className="h-3.5 w-3.5 opacity-70 group-hover:opacity-100" aria-hidden />
               </a>
             </div>

@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { RefreshCw } from "lucide-react";
 import type { ContributionData, ContributionDay } from "@/lib/data/github";
+import { formatStamp } from "@/lib/format";
 
 // Emerald intensity ramp, level 0-4. Level 0 is an empty cell.
 const LEVEL_CLASS = [
@@ -86,7 +87,7 @@ function buildCalendarMonths(weeks: ContributionDay[][]): CalendarMonth[] {
 
 export function Heatmap({
   data,
-  updatedAt = "3h ago",
+  updatedAt = "",
 }: {
   data: ContributionData;
   updatedAt?: string;
@@ -106,7 +107,7 @@ export function Heatmap({
         const json = await res.json();
         if (json.success && json.contributions) {
           setCalendar(json.contributions);
-          setTimeLabel(json.updatedAt || "just now");
+          setTimeLabel(json.updatedAt || new Date().toISOString());
           setSyncStatus("live");
         }
       }
@@ -149,7 +150,7 @@ export function Heatmap({
             {total.toLocaleString()} contributions
           </h3>
           <span className="text-small text-foreground-muted">
-            · updated {timeLabel}
+            · updated {timeLabel ? formatStamp(timeLabel) : "—"}
           </span>
         </div>
 

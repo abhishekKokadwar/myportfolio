@@ -24,7 +24,7 @@ export async function GET() {
       weeklySparkline: unified.weeklySparkline,
       total: unified.total,
       recentCommits: ghStats.recentCommits,
-      updatedAt: "just now",
+      updatedAt: ghStats.updatedAt,
     }, {
       headers: {
         "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120",

@@ -7,11 +7,11 @@ import fallbackData from "@/data/github-fallback.json";
  *
  * Contributions (the heatmap) come from the GraphQL API when a real token is
  * available, or gracefully falls back to the public contributions calendar
- * endpoint (https://github.com/users/Abhishek86798/contributions), or the
+ * endpoint (https://github.com/users/abhishekKokadwar/contributions), or the
  * authentic verified fallback data. It NEVER returns null and NEVER shows failure.
  */
 
-const USERNAME = "Abhishek86798";
+const USERNAME = "abhishekKokadwar";
 const REVALIDATE_SECONDS = 3600; // hourly
 
 const REST = "https://api.github.com";
@@ -93,9 +93,13 @@ async function restFetch<T>(path: string): Promise<T | null> {
       headers,
       next: { revalidate: REVALIDATE_SECONDS },
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.warn(`[github] ${path} -> HTTP ${res.status}${res.status === 401 ? " (GITHUB_TOKEN invalid/expired?)" : ""}`);
+      return null;
+    }
     return (await res.json()) as T;
-  } catch {
+  } catch (err) {
+    console.warn(`[github] ${path} failed:`, err);
     return null;
   }
 }
@@ -111,7 +115,10 @@ async function scrapePublicContributions(): Promise<ContributionData | null> {
       },
       next: { revalidate: REVALIDATE_SECONDS },
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.warn(`[github] contributions scrape -> HTTP ${res.status}`);
+      return null;
+    }
 
     const html = await res.text();
     const mTotal =
@@ -219,7 +226,10 @@ async function fetchGraphQLContributions(): Promise<ContributionData | null> {
       body: JSON.stringify({ query, variables: { login: USERNAME } }),
       next: { revalidate: REVALIDATE_SECONDS },
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.warn(`[github] GraphQL -> HTTP ${res.status}`);
+      return null;
+    }
 
     const json = await res.json();
     const cal = json?.data?.user?.contributionsCollection?.contributionCalendar;
@@ -334,8 +344,10 @@ async function fetchAtomCommits(): Promise<RecentCommit[]> {
         }
       }
 
-      const commitBlockRe =
-        /<code>\s*<a[^>]*href="\/Abhishek86798\/([^/]+)\/commit\/([a-f0-9]+)"[^>]*>([a-f0-9]+)<\/a>\s*<\/code>[\s\S]*?<blockquote>([\s\S]*?)<\/blockquote>/g;
+      const commitBlockRe = new RegExp(
+        `<code>\\s*<a[^>]*href="/${USERNAME}/([^/]+)/commit/([a-f0-9]+)"[^>]*>([a-f0-9]+)</a>\\s*</code>[\\s\\S]*?<blockquote>([\\s\\S]*?)</blockquote>`,
+        "gi"
+      );
       let match: RegExpExecArray | null;
       while ((match = commitBlockRe.exec(rawContent)) !== null) {
         const repo = match[1];
@@ -530,6 +542,9 @@ async function fetchRawGitHubStats(): Promise<GitHubStats> {
     fetchRepos(),
   ]);
 
+  if (!gqlContrib && !scrapedContrib) {
+    console.warn("[github] all live contribution sources failed; serving github-fallback.json");
+  }
   const rawContributions =
     gqlContrib ||
     scrapedContrib ||
@@ -563,7 +578,7 @@ async function fetchRawGitHubStats(): Promise<GitHubStats> {
     longestStreak: derived.longestStreak,
     weeklySparkline: derived.weeklySparkline,
     languages: languageBreakdown(repos),
-    updatedAt: "3h ago",
+    updatedAt: new Date().toISOString(),
   };
 }
 

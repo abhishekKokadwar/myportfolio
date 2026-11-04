@@ -16,7 +16,7 @@ export const siteConfig = {
   // Raw email address; the `mailto:` link is derived where needed.
   email: "abhikokadwar2@gmail.com",
   links: {
-    github: "https://github.com/Abhishek86798",
+    github: "https://github.com/abhishekKokadwar",
     linkedin: "https://www.linkedin.com/in/abhishek-kokadwar/",
     email: "mailto:abhikokadwar2@gmail.com",
     phone: "+91-9307229712",
