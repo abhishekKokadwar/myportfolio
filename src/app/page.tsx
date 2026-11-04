@@ -8,6 +8,7 @@ import { Projects } from "@/components/sections/projects";
 import { Dashboard } from "@/components/sections/dashboard";
 import { Blog } from "@/components/sections/blog";
 import { Footer } from "@/components/sections/footer";
+import { LiveRefresh } from "@/components/live-refresh";
 import { getGitHubStats, mergeUnifiedContributions, type GitHubStats } from "@/lib/data/github";
 import { getCodingStats } from "@/lib/data/codolio";
 import { getAllPosts } from "@/lib/blog";
@@ -56,6 +57,7 @@ export default async function Home() {
       >
         Skip to content
       </a>
+      <LiveRefresh />
       <Nav spotlightIndex={spotlightIndex} />
       <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
         <Hero settings={settingsData as any} stats={stats} />
