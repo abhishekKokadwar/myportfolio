@@ -11,15 +11,13 @@ import type { SpotlightItem } from "@/lib/spotlight";
 import { cn } from "@/lib/utils";
 
 // Desktop nav shows the primary sections in the centered floating pill.
-// Every section (incl. Journey and Dashboard) is in the mobile drawer and Spotlight.
+// Every section (incl. Dashboard) is in the mobile drawer and Spotlight.
 const NAV_LINKS = [
   { href: "#about", id: "about", label: "About" },
   { href: "#experience", id: "experience", label: "Experience" },
   { href: "#open-source", id: "open-source", label: "Open Source" },
   { href: "#projects", id: "projects", label: "Projects" },
-  { href: "#skills", id: "skills", label: "Skills" },
-  { href: "#journey", id: "journey", label: "Journey", desktop: false },
-  { href: "#dashboard", id: "dashboard", label: "Dashboard", desktop: false },
+  { href: "#dashboard", id: "dashboard", label: "Activity", desktop: false },
   { href: "#blog", id: "blog", label: "Blog" },
 ];
 

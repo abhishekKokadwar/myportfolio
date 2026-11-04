@@ -4,13 +4,11 @@ import { projects } from "@/data/projects";
 import { siteConfig } from "@/data/site.config";
 
 const SECTIONS: SpotlightItem[] = [
-  { id: "s-about", label: "About", group: "Sections", href: "#about" },
-  { id: "s-journey", label: "Journey", group: "Sections", href: "#journey", keywords: "timeline milestones" },
+  { id: "s-about", label: "About & Skills", group: "Sections", href: "#about", keywords: "skills tech stack languages" },
   { id: "s-experience", label: "Experience", group: "Sections", href: "#experience", keywords: "work jobs internships" },
-  { id: "s-skills", label: "Skills", group: "Sections", href: "#skills", keywords: "tech stack languages" },
   { id: "s-open-source", label: "Open Source", group: "Sections", href: "#open-source", keywords: "kubeflow karmada pull requests contributions oss" },
   { id: "s-projects", label: "Projects", group: "Sections", href: "#projects", keywords: "work built architecture" },
-  { id: "s-dashboard", label: "Live Dashboard", group: "Sections", href: "#dashboard", keywords: "github stats commits coding" },
+  { id: "s-dashboard", label: "Activity", group: "Sections", href: "#dashboard", keywords: "github stats commits coding" },
   { id: "s-blog", label: "Blog", group: "Sections", href: "#blog", keywords: "writing essays" },
 ];
 

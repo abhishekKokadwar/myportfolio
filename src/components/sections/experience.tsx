@@ -1,7 +1,40 @@
 import { Section, SectionHeading } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
+import { journey as fallbackJourney } from "@/data/journey";
 
-export function Experience({ data = [] }: { data?: any[] }) {
+function Milestones({ data }: { data: any[] }) {
+  const items = data.length > 0 ? data : fallbackJourney;
+  const years = [...new Set(items.map((m: any) => m.year || "2023"))].sort(
+    (a, b) => Number(a) - Number(b)
+  );
+  return (
+    <details className="group mx-auto mt-8 max-w-4xl">
+      <summary className="inline-flex cursor-pointer list-none items-center gap-2 font-mono text-small text-foreground-muted transition-colors hover:text-accent [&::-webkit-details-marker]:hidden">
+        <span className="transition-transform group-open:rotate-90" aria-hidden>▸</span>
+        Earlier milestones ({items.length})
+      </summary>
+      <div className="mt-4 flex flex-col divide-y divide-border/40 border-y border-border/40">
+        {years.map((y) => (
+          <div key={y} className="grid grid-cols-1 gap-2 py-4 md:grid-cols-12 md:gap-8">
+            <span className="font-mono text-small font-semibold text-foreground md:col-span-2">{y}</span>
+            <ul className="flex flex-col gap-3 md:col-span-10">
+              {items
+                .filter((m: any) => (m.year || "2023") === y)
+                .map((m: any, i: number) => (
+                  <li key={m._id || `${y}-${i}`} className="text-small leading-relaxed text-foreground-muted">
+                    <span className="font-medium text-foreground">{m.title}</span>
+                    {m.summary ? <> — {m.summary}</> : null}
+                  </li>
+                ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </details>
+  );
+}
+
+export function Experience({ data = [], journey = [] }: { data?: any[]; journey?: any[] }) {
   // Map Sanity schema fields to component expectations
   const normalizedData = data.map((job: any) => {
     const org = job.company || job.org || "Unknown";
@@ -125,6 +158,10 @@ export function Experience({ data = [] }: { data?: any[] }) {
           );
         })}
       </div>
+
+      <Reveal>
+        <Milestones data={journey} />
+      </Reveal>
     </Section>
   );
 }

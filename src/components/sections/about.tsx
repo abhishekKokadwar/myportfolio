@@ -12,6 +12,7 @@ import {
 import { Section, SectionHeading } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 import { siteConfig } from "@/data/site.config";
+import { SkillsStrip } from "@/components/sections/skills";
 
 const ICONS: Record<string, LucideIcon> = {
   "map-pin": MapPin,
@@ -24,7 +25,7 @@ const ICONS: Record<string, LucideIcon> = {
   brain: Brain,
 };
 
-export function About({ data }: { data?: any }) {
+export function About({ data, skills }: { data?: any; skills?: any[] }) {
   // Use Sanity items if available, otherwise fall back to siteConfig.about
   const items =
     data?.items && data.items.length > 0 ? data.items : siteConfig.about;
@@ -83,6 +84,8 @@ export function About({ data }: { data?: any }) {
           );
         })}
       </div>
+
+      <SkillsStrip data={skills} />
     </Section>
   );
 }

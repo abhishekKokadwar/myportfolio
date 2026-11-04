@@ -1,9 +1,7 @@
 import { Nav } from "@/components/nav";
 import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
-import { Journey } from "@/components/sections/journey";
 import { Experience } from "@/components/sections/experience";
-import { Skills } from "@/components/sections/skills";
 import { Projects } from "@/components/sections/projects";
 import { OpenSource } from "@/components/sections/open-source";
 import { Dashboard } from "@/components/sections/dashboard";
@@ -63,12 +61,10 @@ export default async function Home() {
       <Nav spotlightIndex={spotlightIndex} />
       <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
         <Hero settings={settingsData as any} stats={stats} />
-        <About data={aboutData as any} />
-        <Experience data={experienceData as any} />
+        <About data={aboutData as any} skills={skillsData as any} />
+        <Experience data={experienceData as any} journey={journeyData as any} />
         <OpenSource data={contributionsData as any} />
         <Projects data={projectsData as any} />
-        <Skills data={skillsData as any} />
-        <Journey data={journeyData as any} />
         <Dashboard stats={stats} coding={coding} />
         <Blog posts={posts} />
       </main>

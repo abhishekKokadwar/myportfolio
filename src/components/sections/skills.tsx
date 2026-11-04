@@ -1,14 +1,7 @@
-"use client";
-
-import { useState } from "react";
-
-import { Section, SectionHeading } from "@/components/ui/section";
-import { Reveal } from "@/components/ui/reveal";
-
-import { 
-  SiCplusplus, SiPython, SiJavascript, SiTypescript, SiMysql, 
-  SiLangchain, SiHuggingface, SiNextdotjs, SiPostgresql, SiFirebase, 
-  SiMongodb, SiDocker, SiGit, SiGithub, SiVercel, SiFigma, SiLinux 
+import {
+  SiCplusplus, SiPython, SiJavascript, SiTypescript, SiMysql,
+  SiLangchain, SiHuggingface, SiNextdotjs, SiPostgresql, SiFirebase,
+  SiMongodb, SiDocker, SiGit, SiGithub, SiVercel, SiFigma, SiLinux,
 } from "react-icons/si";
 import { FaJava, FaRobot, FaAws } from "react-icons/fa";
 import { VscVscode } from "react-icons/vsc";
@@ -48,90 +41,42 @@ const iconMap: Record<string, React.ElementType> = {
   "DSA": Binary,
 };
 
-export function Skills({ data = [] }: { data?: any[] }) {
-  const categories = data.map((g: any) => g.category);
-  // Default to the first category instead of "All" to fit the 2-column layout
-  const [activeTab, setActiveTab] = useState(categories[0] || "");
-
-  const activeGroup = data.find((g: any) => g.category === activeTab);
-  const skillsToDisplay = activeGroup?.skills || [];
-
+/** Compact skills: one row per category, chips inline. Lives inside the About section. */
+export function SkillsStrip({ data = [] }: { data?: any[] }) {
+  if (data.length === 0) return null;
   return (
-    <Section id="skills" variant="base">
-      <SectionHeading id="skills">Skills</SectionHeading>
-
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
-        {/* Left Rail: Categories */}
-        <div className="flex md:col-span-4 flex-col gap-1">
-          {categories.map((cat: string) => (
-            <button
-              key={cat}
-              onClick={() => setActiveTab(cat)}
-              className={`flex items-center text-left px-4 py-3 text-body font-medium transition-colors ${
-                activeTab === cat 
-                  ? "border-l-2 border-accent text-foreground bg-background-subtle" 
-                  : "border-l-2 border-transparent text-foreground-muted hover:text-foreground hover:bg-surface"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {/* Right Column: Dense Skill Rows */}
-        <div className="md:col-span-8 flex flex-col gap-1">
-          {/* File tree path in right panel */}
-          <div className="flex items-center gap-1.5 pb-3 mb-2 border-b border-border/50 font-mono text-xs text-foreground-subtle">
-            <span className="text-foreground-muted">skills</span>
-            <span>/</span>
-            <span className="text-accent font-medium">
-              {activeTab.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
-            </span>
-          </div>
-          {skillsToDisplay.map((skill: any, i: number) => {
-            const skillName = skill.name || skill;
-            const Icon = iconMap[skillName] || iconMap[skill.iconString];
-            return (
-              <Reveal key={`${skillName}-${i}`} delay={Math.min(i * 0.03, 0.3)}>
-                <div className="group flex items-center gap-4 rounded-lg px-4 py-2.5 transition-colors hover:bg-surface">
-                  {/* Icon or placeholder space */}
-                  {Icon ? (
-                    <Icon className="h-[18px] w-[18px] shrink-0 text-foreground-muted transition-colors group-hover:text-accent" />
-                  ) : (
-                    <div className="h-[18px] w-[18px] shrink-0" />
-                  )}
-                  
-                  {/* Skill Name */}
-                  <span className="min-w-[140px] text-body font-medium text-foreground">
-                    {skillName}
+    <div className="mt-10">
+      <h3 className="mb-4 font-mono text-xs font-medium tracking-wide text-foreground-muted">
+        skills
+      </h3>
+      <dl className="flex flex-col divide-y divide-black/[0.06] dark:divide-white/[0.06] border-y border-black/[0.06] dark:border-white/[0.06]">
+        {data.map((group: any) => (
+          <div
+            key={group._id || group.category}
+            className="grid grid-cols-1 gap-2 py-3.5 md:grid-cols-12 md:gap-8 md:items-baseline"
+          >
+            <dt className="md:col-span-4 text-small font-medium text-foreground">
+              {group.category}
+            </dt>
+            <dd className="md:col-span-8 flex flex-wrap gap-x-4 gap-y-1.5">
+              {(group.skills || []).map((skill: any, i: number) => {
+                const name = skill.name || skill;
+                const Icon = iconMap[name] || iconMap[skill.iconString];
+                return (
+                  <span
+                    key={`${name}-${i}`}
+                    title={skill.context || undefined}
+                    className="inline-flex items-center gap-1.5 text-small text-foreground-muted"
+                  >
+                    {Icon ? <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden /> : null}
+                    {name}
                   </span>
-
-                  {/* Mono Note / Context */}
-                  {skill.context ? (
-                    <span className="font-mono text-small text-foreground-subtle truncate">
-                      {skill.context}
-                    </span>
-                  ) : null}
-                </div>
-              </Reveal>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Category usage details */}
-      {activeGroup?.usage ? (
-        <Reveal delay={0.1} className="mt-10">
-          <div className="rounded-2xl border border-border bg-surface p-6">
-            <h3 className="text-body-lg font-semibold tracking-tight text-foreground">
-              Deep Dive: {activeGroup.category}
-            </h3>
-            <p className="mt-2 text-body leading-relaxed text-foreground-muted">
-              {activeGroup.usage}
-            </p>
+                );
+              })}
+            </dd>
           </div>
-        </Reveal>
-      ) : null}
-    </Section>
+        ))}
+      </dl>
+    </div>
   );
 }
