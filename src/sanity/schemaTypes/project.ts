@@ -52,6 +52,23 @@ export const projectType = defineType({
       type: 'url',
     }),
     defineField({
+      name: 'links',
+      title: 'More links (PyPI, demos, docs…)',
+      description: 'Shown next to the Live link. Label is the short text on the button, e.g. "PyPI".',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          name: 'projectLink',
+          fields: [
+            { name: 'label', title: 'Label', type: 'string', validation: (rule) => rule.required() },
+            { name: 'url', title: 'URL', type: 'url', validation: (rule) => rule.required() },
+          ],
+          preview: { select: { title: 'label', subtitle: 'url' } },
+        },
+      ],
+    }),
+    defineField({
       name: 'metrics',
       title: 'Metrics (Hairline Row)',
       type: 'array',

@@ -148,6 +148,21 @@ function StackingProjectCard({
                 </a>
               ) : null}
 
+              {(project.links ?? []).map((l: { label: string; url: string }) => (
+                <a
+                  key={l.url}
+                  href={l.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  aria-label={`${project.title} ${l.label}`}
+                  className="hidden sm:inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-surface px-3 font-mono text-xs text-foreground-subtle transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                >
+                  <span>{l.label}</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+                </a>
+              ))}
+
               {project.githubUrl ? (
                 <a
                   href={project.githubUrl}

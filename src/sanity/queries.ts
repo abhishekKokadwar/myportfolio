@@ -77,6 +77,7 @@ export const projectsQuery = groq`*[_type == "project"] | order(_createdAt desc)
   description,
   liveUrl,
   githubUrl,
+  links[] { label, url },
   tags,
   featured,
   metrics[] {
@@ -95,6 +96,7 @@ export const projectBySlugQuery = groq`*[_type == "project" && slug.current == $
   description,
   liveUrl,
   githubUrl,
+  links[] { label, url },
   tags,
   featured,
   metrics[] {

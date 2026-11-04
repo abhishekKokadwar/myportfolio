@@ -118,6 +118,19 @@ export default async function ProjectCaseStudyPage({
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
               ) : null}
+
+              {(project.links ?? []).map((l: { label: string; url: string }) => (
+                <a
+                  key={l.url}
+                  href={l.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-small font-medium text-foreground hover:text-accent transition-colors"
+                >
+                  {l.label}
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              ))}
             </div>
           </div>
 
