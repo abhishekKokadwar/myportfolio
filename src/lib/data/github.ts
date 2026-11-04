@@ -434,7 +434,8 @@ async function fetchRecentCommits(repos: RawRepo[]): Promise<RecentCommit[]> {
   const combined: RecentCommit[] = [];
 
   // Live commits from GitHub come first
-  for (const c of live) {
+  // Newest first: per-repo results arrive in "recently updated repo" order, not commit order.
+  for (const c of [...live].sort((a, b) => +new Date(b.date) - +new Date(a.date))) {
     if (!seen.has(c.sha) && !seen.has(c.message) && combined.length < 4) {
       combined.push(c);
       seen.add(c.sha);

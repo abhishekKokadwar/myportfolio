@@ -15,16 +15,20 @@ const get = async (url, headers = {}) => {
 const site = await get(`${SITE}/api/activity?t=${Date.now()}`);
 let failed = false;
 
-// --- GitHub: newest pushed commit by me vs newest commit the site shows ---
-const events = await get(`https://api.github.com/users/${GH}/events/public?per_page=30`);
-const push = events.find((e) => e.type === "PushEvent" && e.payload.head);
-const realSha = push.payload.head.slice(0, 7);
-const realAt = new Date(push.created_at);
+// --- GitHub: newest commit by me across my recently pushed repos vs the site ---
+// (the public events feed lags by a day or more, so ask each repo directly)
+const repos = await get(`https://api.github.com/users/${GH}/repos?sort=pushed&per_page=6`);
+let newest = null;
+for (const r of repos) {
+  const [c] = await get(`https://api.github.com/repos/${GH}/${r.name}/commits?author=${GH}&per_page=1`).catch(() => []);
+  if (c && (!newest || c.commit.author.date > newest.date))
+    newest = { sha: c.sha.slice(0, 7), repo: r.name, date: c.commit.author.date };
+}
 const siteTop = site.recentCommits[0];
-const siteHas = site.recentCommits.some((c) => c.sha === realSha);
-const lagMin = (Date.now() - realAt) / 60000;
-console.log(`GitHub  newest push: ${realSha} (${push.repo.name}, ${lagMin.toFixed(1)} min ago)`);
-console.log(`        site shows:  ${siteTop.sha} (${siteTop.repo})  includes newest: ${siteHas}`);
+const siteHas = site.recentCommits.some((c) => c.sha === newest.sha);
+const lagMin = (Date.now() - new Date(newest.date)) / 60000;
+console.log(`GitHub  newest commit: ${newest.sha} (${newest.repo}, ${lagMin.toFixed(1)} min ago)`);
+console.log(`        site shows top: ${siteTop.sha} (${siteTop.repo})  includes newest: ${siteHas}`);
 if (!siteHas && lagMin > MAX_LAG_MIN) failed = true;
 
 // --- Codolio: submissions in the site's calendar window vs Codolio's own ---
