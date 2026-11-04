@@ -6,7 +6,7 @@ export const siteConfig = {
   location: "Gwalior, Madhya Pradesh, India",
   status: {
     label: "Currently Building",
-    project: "Zero-Trust Security Gateway",
+    project: "CIDRA",
   },
   // Static dashboard values — "set at launch, refresh occasionally" (§5, §6).
   // DSA counts are now live via Codolio (see lib/data/codolio.ts).
