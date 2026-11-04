@@ -69,7 +69,7 @@ export const contributionsQuery = groq`*[_type == "contribution"] | order(date d
   featured
 }`
 
-export const projectsQuery = groq`*[_type == "project"] | order(_createdAt desc) {
+export const projectsQuery = groq`*[_type == "project"] | order(order asc, _createdAt desc) {
   _id,
   title,
   "slug": slug.current,

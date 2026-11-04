@@ -4,12 +4,12 @@ import { projects } from "@/data/projects";
 import { siteConfig } from "@/data/site.config";
 
 const SECTIONS: SpotlightItem[] = [
-  { id: "s-about", label: "About & Skills", group: "Sections", href: "#about", keywords: "skills tech stack languages" },
-  { id: "s-experience", label: "Experience", group: "Sections", href: "#experience", keywords: "work jobs internships" },
-  { id: "s-open-source", label: "Open Source", group: "Sections", href: "#open-source", keywords: "kubeflow karmada pull requests contributions oss" },
-  { id: "s-projects", label: "Projects", group: "Sections", href: "#projects", keywords: "work built architecture" },
-  { id: "s-dashboard", label: "Activity", group: "Sections", href: "#dashboard", keywords: "github stats commits coding" },
-  { id: "s-blog", label: "Blog", group: "Sections", href: "#blog", keywords: "writing essays" },
+  { id: "s-work", label: "Work", group: "Sections", href: "/#work", keywords: "projects built architecture" },
+  { id: "s-open-source", label: "Open Source", group: "Sections", href: "/#open-source", keywords: "kubeflow karmada pull requests contributions oss" },
+  { id: "s-experience", label: "Experience", group: "Sections", href: "/#experience", keywords: "work jobs internships journey milestones" },
+  { id: "s-writing", label: "Writing", group: "Sections", href: "/#writing", keywords: "blog essays posts" },
+  { id: "s-activity", label: "Activity", group: "Sections", href: "/#activity", keywords: "github stats commits coding leetcode" },
+  { id: "s-about", label: "About & Skills", group: "Sections", href: "/about", keywords: "skills tech stack languages education" },
 ];
 
 const ACTIONS: SpotlightItem[] = [

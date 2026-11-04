@@ -88,6 +88,12 @@ export const projectType = defineType({
       type: 'url',
     }),
     defineField({
+      name: 'order',
+      title: 'Order on the home page',
+      description: 'Lower numbers come first (1 = top).',
+      type: 'number',
+    }),
+    defineField({
       name: 'featured',
       title: 'Featured Project',
       description: 'Turn this on to highlight the project in the main recruiter view',

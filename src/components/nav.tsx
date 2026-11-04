@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/data/site.config";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/brand-icons";
@@ -13,15 +14,14 @@ import { cn } from "@/lib/utils";
 // Desktop nav shows the primary sections in the centered floating pill.
 // Every section (incl. Dashboard) is in the mobile drawer and Spotlight.
 const NAV_LINKS = [
-  { href: "#about", id: "about", label: "About" },
-  { href: "#experience", id: "experience", label: "Experience" },
-  { href: "#open-source", id: "open-source", label: "Open Source" },
-  { href: "#projects", id: "projects", label: "Projects" },
-  { href: "#dashboard", id: "dashboard", label: "Activity", desktop: false },
-  { href: "#blog", id: "blog", label: "Blog" },
+  { href: "/#work", id: "work", label: "Work" },
+  { href: "/#open-source", id: "open-source", label: "Open Source" },
+  { href: "/#experience", id: "experience", label: "Experience" },
+  { href: "/#writing", id: "writing", label: "Writing" },
+  { href: "/about", id: "about", label: "About" },
 ];
 
-const DESKTOP_LINKS = NAV_LINKS.filter((l) => l.desktop !== false);
+const DESKTOP_LINKS = NAV_LINKS;
 
 /** Robust scroll-position based section tracker */
 function useActiveSection(ids: string[]) {
@@ -82,7 +82,9 @@ function useActiveSection(ids: string[]) {
 }
 
 export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
-  const [active, setActive] = useActiveSection(NAV_LINKS.map((l) => l.id));
+  const anchorIds = NAV_LINKS.filter((l) => l.href.startsWith("/#")).map((l) => l.id);
+  const [active, setActive] = useActiveSection(anchorIds);
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -141,11 +143,11 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
   }, [menuOpen]);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith("#")) {
-      e.preventDefault();
-      const targetId = href.slice(1);
+    if (href.startsWith("/#")) {
+      const targetId = href.slice(2);
       const target = document.getElementById(targetId);
       if (target) {
+        e.preventDefault();
         setActive(targetId);
         const headerOffset = 90; // floating nav clearance
         const elementPosition = target.getBoundingClientRect().top;
@@ -167,7 +169,7 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
         <div className="pointer-events-auto hidden md:flex items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <ul className="flex items-center gap-1 rounded-full border border-border/80 bg-surface/90 p-1 backdrop-blur-md shadow-xs">
             {DESKTOP_LINKS.map((link) => {
-              const isActive = active === link.id;
+              const isActive = active === link.id || pathname === link.href;
               return (
                 <li key={link.href}>
                   <a
@@ -270,7 +272,7 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
                   {/* Navigation Links */}
                   <ul className="mt-6 flex flex-col gap-1.5">
                     {NAV_LINKS.map((link, idx) => {
-                      const isActive = active === link.id;
+                      const isActive = active === link.id || pathname === link.href;
                       return (
                         <li key={link.href}>
                           <a

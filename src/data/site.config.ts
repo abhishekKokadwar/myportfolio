@@ -3,7 +3,10 @@ export const siteConfig = {
   role: "Backend & AI Systems Engineer",
   tagline:
     "I build high-performance backend infrastructure, secure AI agents, and scalable web applications. Currently a pre-final year Dual Degree student at IIITM Gwalior.",
-  location: "Gwalior, Madhya Pradesh, India",
+  location: "Gwalior, India",
+  lede: "I build secure AI agents and the backend systems under them.",
+  availability: "Open to software engineering roles",
+  education: { school: "IIIT Gwalior", detail: "B.Tech IT + MBA, 2023–2028" },
   status: {
     label: "Currently Building",
     project: "CIDRA",
