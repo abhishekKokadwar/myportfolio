@@ -1,46 +1,44 @@
 import { Nav } from "@/components/nav";
 import { Hero } from "@/components/sections/hero";
-import { Work } from "@/components/sections/work";
-import { OpenSource } from "@/components/sections/open-source";
+import { About } from "@/components/sections/about";
 import { Experience } from "@/components/sections/experience";
+import { Projects } from "@/components/sections/projects";
+import { OpenSource } from "@/components/sections/open-source";
+import { Dashboard } from "@/components/sections/dashboard";
 import { Blog } from "@/components/sections/blog";
-import { Activity } from "@/components/sections/activity";
 import { Footer } from "@/components/sections/footer";
 import { LiveRefresh } from "@/components/live-refresh";
 import { getGitHubStats, mergeUnifiedContributions, type GitHubStats } from "@/lib/data/github";
 import { getCodingStats } from "@/lib/data/codolio";
 import { getAllPosts } from "@/lib/blog";
 import { buildSpotlightIndex } from "@/lib/spotlight-index";
-import { sanityFetch } from "@/sanity/client";
-import {
-  journeyQuery,
-  experienceQuery,
-  projectsQuery,
-  siteSettingsQuery,
-  contributionsQuery,
-} from "@/sanity/queries";
 
 // Rebuild the page at most every 5 min (ISR) so commits and DSA stats stay fresh.
 export const revalidate = 300;
 
-type Settings = { currentlyBuilding?: string; resumeUrl?: string } | null;
-type Contribution = { kind?: string; status?: string };
+import { sanityFetch } from "@/sanity/client";
+import { journeyQuery, experienceQuery, skillsQuery, projectsQuery, siteSettingsQuery, aboutQuery, contributionsQuery } from "@/sanity/queries";
 
 export default async function Home() {
-  const [rawStats, coding, posts, journeyData, experienceData, projectsData, settingsData, contributionsData] =
-    await Promise.all([
-      getGitHubStats(),
-      getCodingStats(),
-      getAllPosts(),
-      sanityFetch({ query: journeyQuery, tags: ["journey"] }),
-      sanityFetch({ query: experienceQuery, tags: ["experience"] }),
-      sanityFetch({ query: projectsQuery, tags: ["project"] }),
-      sanityFetch({ query: siteSettingsQuery, tags: ["siteSettings"] }),
-      sanityFetch({ query: contributionsQuery, tags: ["contribution"] }),
-    ]);
+  const [rawStats, coding, posts, journeyData, experienceData, skillsData, projectsData, settingsData, aboutData, contributionsData] = await Promise.all([
+    getGitHubStats(),
+    getCodingStats(),
+    getAllPosts(),
+    sanityFetch({ query: journeyQuery, tags: ["journey"] }),
+    sanityFetch({ query: experienceQuery, tags: ["experience"] }),
+    sanityFetch({ query: skillsQuery, tags: ["skill"] }),
+    sanityFetch({ query: projectsQuery, tags: ["project"] }),
+    sanityFetch({ query: siteSettingsQuery, tags: ["siteSettings"] }),
+    sanityFetch({ query: aboutQuery, tags: ["about"] }),
+    sanityFetch({ query: contributionsQuery, tags: ["contribution"] }),
+  ]);
 
-  // Datewise union of GitHub contributions and Codolio submissions
-  const unified = mergeUnifiedContributions(rawStats.contributions, coding.dailySubmissions);
+  // Datewise union of GitHub contributions & Codolio DSA submissions
+  const unified = mergeUnifiedContributions(
+    rawStats.contributions,
+    coding.dailySubmissions
+  );
+
   const stats: GitHubStats = {
     ...rawStats,
     contributions: unified.contributions,
@@ -49,11 +47,7 @@ export default async function Home() {
     weeklySparkline: unified.weeklySparkline,
   };
 
-  const settings = settingsData as Settings;
-  const mergedPrs = ((contributionsData as Contribution[]) ?? []).filter(
-    (c) => c.kind !== "membership" && c.status === "merged"
-  ).length;
-  const spotlightIndex = buildSpotlightIndex(posts, settings?.resumeUrl);
+  const spotlightIndex = buildSpotlightIndex(posts, (settingsData as any)?.resumeUrl);
 
   return (
     <>
@@ -66,12 +60,13 @@ export default async function Home() {
       <LiveRefresh />
       <Nav spotlightIndex={spotlightIndex} />
       <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
-        <Hero settings={settings} stats={stats} mergedPrs={mergedPrs} />
-        <Work data={projectsData as any} />
-        <OpenSource data={contributionsData as any} />
+        <Hero settings={settingsData as any} stats={stats} />
+        <About data={aboutData as any} skills={skillsData as any} />
         <Experience data={experienceData as any} journey={journeyData as any} />
+        <OpenSource data={contributionsData as any} />
+        <Projects data={projectsData as any} />
+        <Dashboard stats={stats} coding={coding} />
         <Blog posts={posts} />
-        <Activity stats={stats} coding={coding} />
       </main>
       <Footer />
     </>

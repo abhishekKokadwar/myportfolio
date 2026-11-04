@@ -1,5 +1,5 @@
 import { ArrowUpRight, GitCommitHorizontal } from "lucide-react";
-import { RailSection } from "@/components/ui/rail";
+import { Section, SectionHeading } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 import { Heatmap } from "@/components/dashboard/heatmap";
 import { siteConfig } from "@/data/site.config";
@@ -16,7 +16,7 @@ function relativeTime(iso: string): string {
   return `${Math.floor(days / 30)}mo ago`;
 }
 
-const CARD = "rounded-[var(--radius-frame)] border border-border/70 bg-surface/40 p-5";
+const CARD = "rounded-2xl border border-border bg-surface p-5 shadow-sm";
 
 export function Dashboard({
   stats,
@@ -34,7 +34,9 @@ export function Dashboard({
   const easyPct = Math.max(0, 100 - mediumPct - hardPct);
 
   return (
-    <RailSection id="activity" index="02" label="Activity" hint="Live from GitHub and Codolio.">
+    <Section id="dashboard" variant="base">
+      <SectionHeading id="dashboard">Activity</SectionHeading>
+
       <Reveal className={CARD}>
         <Heatmap data={contributions} updatedAt={stats.updatedAt} />
       </Reveal>
@@ -125,6 +127,6 @@ export function Dashboard({
           </a>
         </Reveal>
       </div>
-    </RailSection>
+    </Section>
   );
 }
