@@ -27,6 +27,12 @@ export function Dashboard({
 }) {
   const { contributions, recentCommits } = stats;
 
+  const solved = coding.easy + coding.medium + coding.hard;
+  const pct = (n: number) => (solved > 0 ? Math.round((n / solved) * 100) : 0);
+  const mediumPct = pct(coding.medium);
+  const hardPct = pct(coding.hard);
+  const easyPct = Math.max(0, 100 - mediumPct - hardPct);
+
   return (
     <Section id="dashboard" variant="base">
       <SectionHeading id="dashboard">Activity</SectionHeading>
@@ -54,7 +60,7 @@ export function Dashboard({
             </a>
           </div>
           <ul className="mt-3 flex flex-col divide-y divide-border/40">
-            {recentCommits.slice(0, 3).map((c) => (
+            {recentCommits.slice(0, 4).map((c) => (
               <li key={c.sha} className="py-2.5 first:pt-0 last:pb-0">
                 <a href={c.url} target="_blank" rel="noopener noreferrer" className="group block">
                   <p className="truncate font-mono text-small text-foreground transition-colors group-hover:text-accent">
@@ -82,23 +88,32 @@ export function Dashboard({
               <div className="text-right font-mono text-xs text-foreground-subtle">
                 {coding.contestsCount} contests
                 <br />
-                {coding.activeDays} coding days
+                {coding.activeDays} coding days · {coding.longestStreak} streak
               </div>
             </div>
 
             <dl className="mt-5 grid grid-cols-4 gap-2 border-t border-border/50 pt-4 text-center">
               {[
-                ["Solved", coding.total, "text-foreground"],
-                ["Easy", coding.easy, "text-foreground-muted"],
-                ["Medium", coding.medium, "text-accent"],
-                ["Hard", coding.hard, "text-foreground"],
-              ].map(([label, n, tone]) => (
+                ["Solved", coding.total, "", "text-foreground"],
+                ["Easy", coding.easy, `${easyPct}%`, "text-foreground-muted"],
+                ["Medium", coding.medium, `${mediumPct}%`, "text-accent"],
+                ["Hard", coding.hard, `${hardPct}%`, "text-foreground"],
+              ].map(([label, n, share, tone]) => (
                 <div key={label as string}>
                   <dd className={`font-mono text-xl font-semibold ${tone}`}>{n}</dd>
-                  <dt className="mt-0.5 text-xs text-foreground-subtle">{label}</dt>
+                  <dt className="mt-0.5 text-xs text-foreground-subtle">
+                    {label}
+                    {share ? <span className="ml-1 font-mono text-[11px]">{share}</span> : null}
+                  </dt>
                 </div>
               ))}
             </dl>
+
+            <div className="mt-3 flex h-1.5 w-full overflow-hidden rounded-full bg-border/50" aria-hidden>
+              <div style={{ width: `${mediumPct}%` }} className="h-full bg-accent" />
+              <div style={{ width: `${hardPct}%` }} className="h-full bg-emerald-300 dark:bg-emerald-200" />
+              <div style={{ width: `${easyPct}%` }} className="h-full bg-border" />
+            </div>
           </div>
 
           <a
@@ -107,7 +122,7 @@ export function Dashboard({
             rel="noopener noreferrer"
             className="group mt-4 inline-flex items-center gap-1.5 font-mono text-xs text-foreground-muted transition-colors hover:text-accent"
           >
-            <span>Across LeetCode, Code360, GfG & CodeChef · via Codolio</span>
+            <span>LeetCode, Code360, GfG & CodeChef · via Codolio · as of {coding.capturedAt}</span>
             <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
           </a>
         </Reveal>

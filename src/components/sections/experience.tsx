@@ -24,6 +24,22 @@ function Milestones({ data }: { data: any[] }) {
                   <li key={m._id || `${y}-${i}`} className="text-small leading-relaxed text-foreground-muted">
                     <span className="font-medium text-foreground">{m.title}</span>
                     {m.summary ? <> — {m.summary}</> : null}
+                    {m.detail || m.link || (m.tags && m.tags.length > 0) ? (
+                      <details className="mt-1.5 rounded-lg border border-border/50 bg-surface/50 px-3 py-2">
+                        <summary className="cursor-pointer font-mono text-xs text-foreground-subtle hover:text-accent">more</summary>
+                        {m.detail ? <p className="mt-2">{m.detail}</p> : null}
+                        {m.tags && m.tags.length > 0 ? (
+                          <div className="mt-2 flex flex-wrap gap-1.5">
+                            {m.tags.map((t: string) => (
+                              <span key={t} className="rounded-full border border-border/80 bg-background px-2 py-0.5 font-mono text-[11px] text-foreground-subtle">{t}</span>
+                            ))}
+                          </div>
+                        ) : null}
+                        {m.link ? (
+                          <a href={m.link.href} className="mt-2 inline-block text-xs font-semibold text-accent hover:text-accent-hover">{m.link.label} →</a>
+                        ) : null}
+                      </details>
+                    ) : null}
                   </li>
                 ))}
             </ul>

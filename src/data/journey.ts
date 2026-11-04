@@ -70,10 +70,10 @@ export const journey: JourneyMilestone[] = [
     period: "Mid 2025",
     title: "Hackathons & Autonomous AI",
     summary:
-      "Built AyuSynapse solo at Healthcare AI Hackathon. Shipped an end-to-end clinical trial matching engine under a 36-hour sprint.",
+      "Built an end-to-end clinical-trial matching pipeline solo at a Healthcare AI Hackathon, in a 36-hour sprint.",
     detail:
-      "Went from learning to shipping — hackathons and AI projects, including AyuSynapse (a clinical-trial matching pipeline built solo at a Healthcare AI Hackathon). This is where ideas started turning into working things under time pressure.",
-    tags: ["Hackathons", "AyuSynapse", "BioBERT", "ChromaDB"],
+      "Went from learning to shipping through hackathons and AI projects. This is where ideas started turning into working things under time pressure.",
+    tags: ["Hackathons", "BioBERT", "ChromaDB"],
   },
   {
     id: "internships",

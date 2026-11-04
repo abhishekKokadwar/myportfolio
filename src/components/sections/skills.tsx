@@ -55,7 +55,7 @@ export function SkillsStrip({ data = [] }: { data?: any[] }) {
             key={group._id || group.category}
             className="grid grid-cols-1 gap-2 py-3.5 md:grid-cols-12 md:gap-8 md:items-baseline"
           >
-            <dt className="md:col-span-4 text-small font-medium text-foreground">
+            <dt className="md:col-span-4 text-small font-medium text-foreground" title={group.usage || undefined}>
               {group.category}
             </dt>
             <dd className="md:col-span-8 flex flex-wrap gap-x-4 gap-y-1.5">

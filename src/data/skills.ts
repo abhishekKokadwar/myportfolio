@@ -14,7 +14,7 @@ export const skillGroups: SkillGroup[] = [
   {
     category: "AI / ML",
     skills: ["RAG", "LangChain", "HuggingFace Transformers", "BioBERT"],
-    usage: "Fine-tuned BioBERT for medical NER; RAG over ChromaDB embeddings for trial retrieval (AyuSynapse).",
+    usage: "Fine-tuned BioBERT for medical NER; RAG over ChromaDB embeddings for clinical-trial retrieval.",
   },
   {
     category: "Backend",

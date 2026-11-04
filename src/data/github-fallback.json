@@ -1967,30 +1967,23 @@
   },
   "topRepos": [
     {
-      "name": "Ayusynapse",
-      "description": "AI-integrated clinical trial matching pipeline with FHIR EMR parsing and semantic trial ranking.",
-      "url": "https://github.com/Abhishek86798/Ayusynapse",
-      "stars": 3,
-      "language": "TypeScript"
-    },
-    {
       "name": "CIDRA",
       "description": "CI Debugging & Repair Agent using LangGraph, Claude 3.5 Sonnet, and Docker sandbox loops.",
-      "url": "https://github.com/Abhishek86798/myportfolio",
+      "url": "https://github.com/abhishekKokadwar/myportfolio",
       "stars": 2,
       "language": "Python"
     },
     {
       "name": "smartAnalysis",
       "description": "Financial & operational intelligence analytics platform with automated metric extraction.",
-      "url": "https://github.com/Abhishek86798/smartAnalysis",
+      "url": "https://github.com/abhishekKokadwar/smartAnalysis",
       "stars": 1,
       "language": "TypeScript"
     },
     {
       "name": "campusSafe",
       "description": "Campus safety gateway with real-time incident verification and geofenced alert broadcast.",
-      "url": "https://github.com/Abhishek86798/campusSafe",
+      "url": "https://github.com/abhishekKokadwar/campusSafe",
       "stars": 1,
       "language": "Go"
     }
@@ -2000,23 +1993,15 @@
       "sha": "f1d4a89",
       "message": "feat(l3): severity scoring on declared-vs-observed delta",
       "repo": "CIDRA",
-      "url": "https://github.com/Abhishek86798/myportfolio",
+      "url": "https://github.com/abhishekKokadwar/myportfolio",
       "date": "2026-08-30T16:45:00Z",
       "note": "Evaluates diff severity in isolated runner before routing triage tickets."
-    },
-    {
-      "sha": "a9f3b21",
-      "message": "feat(pipeline): optimize FHIR patient matching with vector index pruning",
-      "repo": "Ayusynapse",
-      "url": "https://github.com/Abhishek86798/Ayusynapse",
-      "date": "2026-08-28T14:22:00Z",
-      "note": "Reduced semantic ranking latency by 45% using ChromaDB HNSW tuning."
     },
     {
       "sha": "7c1e84a",
       "message": "perf(agent): integrate seccomp syscall filtering for untrusted CI test runs",
       "repo": "CIDRA",
-      "url": "https://github.com/Abhishek86798/myportfolio",
+      "url": "https://github.com/abhishekKokadwar/myportfolio",
       "date": "2026-08-26T10:15:00Z",
       "note": "Enforces least-privilege Docker execution during patch verification."
     },
@@ -2024,7 +2009,7 @@
       "sha": "4b20d91",
       "message": "refactor(api): implement normalized PostgreSQL schema with Row-Level Security",
       "repo": "VyaparPragati",
-      "url": "https://github.com/Abhishek86798",
+      "url": "https://github.com/abhishekKokadwar",
       "date": "2026-08-23T18:40:00Z",
       "note": "Eliminated N+1 roundtrips across 6 backend modules."
     }
