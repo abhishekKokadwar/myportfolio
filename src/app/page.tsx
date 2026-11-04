@@ -5,6 +5,7 @@ import { Journey } from "@/components/sections/journey";
 import { Experience } from "@/components/sections/experience";
 import { Skills } from "@/components/sections/skills";
 import { Projects } from "@/components/sections/projects";
+import { OpenSource } from "@/components/sections/open-source";
 import { Dashboard } from "@/components/sections/dashboard";
 import { Blog } from "@/components/sections/blog";
 import { Footer } from "@/components/sections/footer";
@@ -18,10 +19,10 @@ import { buildSpotlightIndex } from "@/lib/spotlight-index";
 export const revalidate = 300;
 
 import { sanityFetch } from "@/sanity/client";
-import { journeyQuery, experienceQuery, skillsQuery, projectsQuery, siteSettingsQuery, aboutQuery } from "@/sanity/queries";
+import { journeyQuery, experienceQuery, skillsQuery, projectsQuery, siteSettingsQuery, aboutQuery, contributionsQuery } from "@/sanity/queries";
 
 export default async function Home() {
-  const [rawStats, coding, posts, journeyData, experienceData, skillsData, projectsData, settingsData, aboutData] = await Promise.all([
+  const [rawStats, coding, posts, journeyData, experienceData, skillsData, projectsData, settingsData, aboutData, contributionsData] = await Promise.all([
     getGitHubStats(),
     getCodingStats(),
     getAllPosts(),
@@ -31,6 +32,7 @@ export default async function Home() {
     sanityFetch({ query: projectsQuery, tags: ["project"] }),
     sanityFetch({ query: siteSettingsQuery, tags: ["siteSettings"] }),
     sanityFetch({ query: aboutQuery, tags: ["about"] }),
+    sanityFetch({ query: contributionsQuery, tags: ["contribution"] }),
   ]);
 
   // Datewise union of GitHub contributions & Codolio DSA submissions
@@ -63,6 +65,7 @@ export default async function Home() {
         <Hero settings={settingsData as any} stats={stats} />
         <About data={aboutData as any} />
         <Experience data={experienceData as any} />
+        <OpenSource data={contributionsData as any} />
         <Projects data={projectsData as any} />
         <Skills data={skillsData as any} />
         <Journey data={journeyData as any} />

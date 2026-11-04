@@ -58,3 +58,8 @@ res.tex
 
 .vercel
 .env*
+
+# local tooling
+.sanity/
+dist/
+.playwright-mcp/

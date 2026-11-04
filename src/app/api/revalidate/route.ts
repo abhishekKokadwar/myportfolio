@@ -9,6 +9,7 @@ const ALL_TAGS = [
   "experience",
   "skill",
   "project",
+  "contribution",
   "post",
   "github",
 ];

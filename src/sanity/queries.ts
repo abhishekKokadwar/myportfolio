@@ -56,6 +56,19 @@ export const skillsQuery = groq`*[_type == "skill"] | order(order asc) {
   }
 }`
 
+export const contributionsQuery = groq`*[_type == "contribution"] | order(date desc) {
+  _id,
+  kind,
+  repo,
+  number,
+  title,
+  url,
+  status,
+  date,
+  impact,
+  featured
+}`
+
 export const projectsQuery = groq`*[_type == "project"] | order(_createdAt desc) {
   _id,
   title,

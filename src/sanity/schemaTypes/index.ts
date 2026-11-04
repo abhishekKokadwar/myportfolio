@@ -6,7 +6,8 @@ import { projectType } from './project'
 import { postType } from './post'
 import { skillType } from './skill'
 import { siteSettingsType } from './siteSettings'
+import { contributionType } from './contribution'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [aboutType, journeyType, experienceType, projectType, postType, skillType, siteSettingsType],
+  types: [aboutType, journeyType, experienceType, projectType, postType, skillType, siteSettingsType, contributionType],
 }

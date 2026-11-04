@@ -28,7 +28,7 @@ export const siteConfig = {
       specLabel: "Academics",
       icon: "graduation", 
       label: "B.Tech IT + MBA @ IIITM Gwalior",
-      meta: "IIITM Gwalior · 2022–2027",
+      meta: "IIIT Gwalior · 2023–2028",
       description: "Pre-final year student in a 5-year integrated dual degree program. Blending deep technical systems engineering with business strategy, focusing on distributed systems and software architecture.",
     },
     { 
@@ -48,9 +48,9 @@ export const siteConfig = {
     { 
       specLabel: "Availability",
       icon: "rocket", 
-      label: "Software Engineering Internships",
-      meta: "Open for Summer & Fall 2025/2026",
-      description: "Active open-source contributor in the cloud native ecosystem (CNCF/Meshery). Solved 852 DSA problems (393 Medium, 55 Hard) across LeetCode, GeeksforGeeks, and Code360.",
+      label: "Open to software engineering roles",
+      meta: "Internships & full-time",
+      description: "Kubeflow organization member with 16 merged PRs across Kubeflow and Karmada. Solved 900+ DSA problems across LeetCode, Code360 and GeeksforGeeks.",
     },
   ],
 } as const;
