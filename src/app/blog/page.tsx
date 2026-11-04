@@ -7,7 +7,7 @@ import { BlogCard } from "@/components/blog/blog-card";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Writing — Abhishek Kokadwar",
+  title: "Writing",
   description:
     "Essays on product discovery, AI security, systems, and the trade-offs behind engineering decisions.",
 };

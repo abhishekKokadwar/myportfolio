@@ -31,7 +31,7 @@ export async function generateMetadata({
   const post = await getPost(slug);
   if (!post) return {};
   return {
-    title: `${post.title} — Abhishek Kokadwar`,
+    title: post.title,
     description: post.description,
     alternates: post.canonical ? { canonical: post.canonical } : undefined,
   };
