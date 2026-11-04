@@ -141,6 +141,6 @@ export const projects: Project[] = [
         "Parses FHIR EMRs, extracts medical entities via fine-tuned BioBERT NER, indexes embeddings in ChromaDB for semantic retrieval over trial eligibility criteria, then orchestrates a LangChain RAG workflow for downstream filtering and candidate ranking.",
     },
     techStack: ["Python", "BioBERT", "LangChain", "ChromaDB", "FHIR", "RAG"],
-    github: "https://github.com/Abhishek86798/ayusynapse3.0",
+    github: "https://github.com/abhishekKokadwar/ayusynapse3.0",
   },
 ];
