@@ -53,12 +53,12 @@ export function SkillsStrip({ data = [] }: { data?: any[] }) {
         {data.map((group: any) => (
           <div
             key={group._id || group.category}
-            className="grid grid-cols-1 gap-2 py-3.5 md:grid-cols-[150px_1fr] md:gap-6 md:items-baseline"
+            className="grid grid-cols-1 gap-2 py-3.5 md:grid-cols-12 md:gap-8 md:items-baseline"
           >
-            <dt className="font-mono text-xs uppercase tracking-[0.04em] text-foreground-subtle" title={group.usage || undefined}>
+            <dt className="md:col-span-4 text-small font-medium text-foreground" title={group.usage || undefined}>
               {group.category}
             </dt>
-            <dd className="flex flex-wrap gap-x-4 gap-y-1.5">
+            <dd className="md:col-span-8 flex flex-wrap gap-x-4 gap-y-1.5">
               {(group.skills || []).map((skill: any, i: number) => {
                 const name = skill.name || skill;
                 const Icon = iconMap[name] || iconMap[skill.iconString];
