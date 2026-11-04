@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Abhishek Kokadwar",
-  role: "Backend & AI Systems Engineer",
+  role: "Software Developer · AI Systems",
   tagline:
     "I build high-performance backend infrastructure, secure AI agents, and scalable web applications. Currently a pre-final year Dual Degree student at IIITM Gwalior.",
   location: "Gwalior, Madhya Pradesh, India",
@@ -27,23 +27,23 @@ export const siteConfig = {
     { 
       specLabel: "Academics",
       icon: "graduation", 
-      label: "B.Tech IT + MBA @ IIITM Gwalior",
+      label: "Integrated Dual Degree in IT @ IIIT Gwalior",
       meta: "IIIT Gwalior · 2023–2028",
-      description: "Pre-final year student in a 5-year integrated dual degree program. Blending deep technical systems engineering with business strategy, focusing on distributed systems and software architecture.",
+      description: "CGPA 7.5/10. Coursework in data structures, operating systems, computer networks and databases.",
     },
     { 
       specLabel: "Discipline",
       icon: "terminal", 
       label: "Backend & AI Systems Engineering",
       meta: "FastAPI · Next.js · PostgreSQL · ChromaDB",
-      description: "Specialized in scalable web applications, microservices, and production RAG pipelines. Building high-throughput APIs with Python, C++, TypeScript, and robust database indexing.",
+      description: "REST APIs, indexing and microservices on Docker and Kubernetes.",
     },
     { 
       specLabel: "Security",
       icon: "shield", 
       label: "AI Security Tooling & Sandboxing",
       meta: "Zero-Trust · Linux Sandboxing",
-      description: "Architecting least-privilege execution environments and security proxies for LLM tools. Exploring seccomp, strace system call tracing, and deterministic authorization gateways.",
+      description: "Least-privilege sandboxes and gateways for LLM tools.",
     },
     { 
       specLabel: "Availability",

@@ -2,27 +2,27 @@
 
 import { createContext, useContext, useEffect, type ReactNode } from "react";
 
-type Theme = "dark";
+type Theme = "light";
 
 const ThemeContext = createContext<{
   theme: Theme;
-}>({ theme: "dark" });
+}>({ theme: "light" });
 
 export const themeInitScript = `
 (function() {
-  document.documentElement.setAttribute('data-theme', 'dark');
-  document.documentElement.classList.add('dark');
+  document.documentElement.setAttribute('data-theme', 'light');
+  document.documentElement.classList.remove('dark');
 })();
 `;
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", "dark");
-    document.documentElement.classList.add("dark");
+    document.documentElement.setAttribute("data-theme", "light");
+    document.documentElement.classList.remove("dark");
   }, []);
 
   return (
-    <ThemeContext.Provider value={{ theme: "dark" }}>
+    <ThemeContext.Provider value={{ theme: "light" }}>
       {children}
     </ThemeContext.Provider>
   );

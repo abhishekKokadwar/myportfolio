@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * Sticky TOC (desktop only) with active-section highlight via IntersectionObserver.
- * Quiet by design — plain indented text, emerald tick on the active item only.
+ * Quiet by design — plain indented text, accent tick on the active item only.
  */
 export function TableOfContents({ items }: { items: TocItem[] }) {
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -33,21 +33,21 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
   if (items.length === 0) return null;
 
   return (
-    <nav aria-label="Table of contents" className="text-small">
-      <p className="mb-4 font-medium uppercase tracking-widest text-foreground-subtle">
+    <nav aria-label="Table of contents" className="pop-card p-4 text-small shadow-[5px_5px_0_var(--color-border)]">
+      <p className="mb-3 font-mono text-xs font-medium uppercase tracking-wider text-foreground">
         On this page
       </p>
-      <ul className="flex flex-col gap-2 border-l border-border">
+      <ul className="flex flex-col gap-1 border-l-2 border-border">
         {items.map((item) => (
           <li key={item.id}>
             <a
               href={`#${item.id}`}
               className={cn(
-                "-ml-px block border-l-2 py-0.5 transition-colors",
+                "-ml-[2px] block border-l-[3px] py-1 transition-colors",
                 item.level === 3 ? "pl-6" : "pl-4",
                 activeId === item.id
-                  ? "border-accent font-medium text-accent"
-                  : "border-transparent text-foreground-muted hover:text-foreground"
+                  ? "border-accent font-bold text-foreground"
+                  : "border-transparent text-foreground-muted hover:text-accent"
               )}
             >
               {item.text}

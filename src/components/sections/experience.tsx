@@ -1,56 +1,10 @@
 import { Section, SectionHeading } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
-import { journey as fallbackJourney } from "@/data/journey";
 
-function Milestones({ data }: { data: any[] }) {
-  const items = data.length > 0 ? data : fallbackJourney;
-  const years = [...new Set(items.map((m: any) => m.year || "2023"))].sort(
-    (a, b) => Number(a) - Number(b)
-  );
-  return (
-    <details className="group mx-auto mt-8 max-w-4xl">
-      <summary className="inline-flex cursor-pointer list-none items-center gap-2 font-mono text-small text-foreground-muted transition-colors hover:text-accent [&::-webkit-details-marker]:hidden">
-        <span className="transition-transform group-open:rotate-90" aria-hidden>▸</span>
-        Earlier milestones ({items.length})
-      </summary>
-      <div className="mt-4 flex flex-col divide-y divide-border/40 border-y border-border/40">
-        {years.map((y) => (
-          <div key={y} className="grid grid-cols-1 gap-2 py-4 md:grid-cols-12 md:gap-8">
-            <span className="font-mono text-small font-semibold text-foreground md:col-span-2">{y}</span>
-            <ul className="flex flex-col gap-3 md:col-span-10">
-              {items
-                .filter((m: any) => (m.year || "2023") === y)
-                .map((m: any, i: number) => (
-                  <li key={m._id || `${y}-${i}`} className="text-small leading-relaxed text-foreground-muted">
-                    <span className="font-medium text-foreground">{m.title}</span>
-                    {m.summary ? <> — {m.summary}</> : null}
-                    {m.detail || m.link || (m.tags && m.tags.length > 0) ? (
-                      <details className="mt-1.5 rounded-lg border border-border/50 bg-surface/50 px-3 py-2">
-                        <summary className="cursor-pointer font-mono text-xs text-foreground-subtle hover:text-accent">more</summary>
-                        {m.detail ? <p className="mt-2">{m.detail}</p> : null}
-                        {m.tags && m.tags.length > 0 ? (
-                          <div className="mt-2 flex flex-wrap gap-1.5">
-                            {m.tags.map((t: string) => (
-                              <span key={t} className="rounded-full border border-border/80 bg-background px-2 py-0.5 font-mono text-[11px] text-foreground-subtle">{t}</span>
-                            ))}
-                          </div>
-                        ) : null}
-                        {m.link ? (
-                          <a href={m.link.href} className="mt-2 inline-block text-xs font-semibold text-accent hover:text-accent-hover">{m.link.label} →</a>
-                        ) : null}
-                      </details>
-                    ) : null}
-                  </li>
-                ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </details>
-  );
-}
+/** Tile tints, in order: mint, sky, blush. Dark text on each stays above 4.5:1. */
+const TILE_FILLS = ["bg-mint", "bg-sky", "bg-blush"];
 
-export function Experience({ data = [], journey = [] }: { data?: any[]; journey?: any[] }) {
+export function Experience({ data = [] }: { data?: any[] }) {
   // Map Sanity schema fields to component expectations
   const normalizedData = data.map((job: any) => {
     const org = job.company || job.org || "Unknown";
@@ -91,16 +45,16 @@ export function Experience({ data = [], journey = [] }: { data?: any[]; journey?
           return (
             <Reveal key={job._id || `${job.org}-${job.period}-${i}`} delay={i * 0.05}>
               <article
-                className={`relative overflow-hidden rounded-2xl transition-all ${
+                className={`relative overflow-hidden ${
                   isLatest
-                    ? "border border-border/90 bg-[#17181c] p-6 sm:p-8 shadow-2xl shadow-black/30 ring-1 ring-white/[0.06] before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-accent/50 before:to-transparent hover:border-accent/40"
-                    : "border border-border/40 bg-surface/30 p-6 sm:p-8 hover:bg-surface/50 hover:border-border/60"
+                    ? "pop-card bg-surface p-6 sm:p-8"
+                    : "pop-card bg-surface p-6 sm:p-8"
                 }`}
               >
                 {/* Status Indicator & Period */}
-                <div className="mb-2.5 flex items-center justify-between">
+                <div className="mb-2.5 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
                   {isLatest ? (
-                    <span className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-accent">
+                    <span className="inline-flex items-center gap-1.5 whitespace-nowrap font-mono text-xs font-semibold text-accent">
                       <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
                       Most Recent
                     </span>
@@ -133,51 +87,77 @@ export function Experience({ data = [], journey = [] }: { data?: any[]; journey?
                   </h3>
                 </div>
 
-                {/* Bullet Points with Substantive Accomplishments */}
-                <ul className="mt-5 flex flex-col gap-2.5">
-                  {job.highlights.map((point: string, idx: number) => (
-                    <li
-                      key={`${idx}-${point.substring(0, 10)}`}
-                      className="flex gap-3 text-body text-foreground-muted leading-relaxed"
-                    >
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
-                      <span>{point}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                {job.engineerHighlights && job.engineerHighlights.length > 0 ? (
-                  <ul className="mt-3 flex flex-col gap-2 border-l-2 border-border pl-4">
-                    {job.engineerHighlights.map((point: string) => (
-                      <li key={point} className="text-small text-foreground-muted">
-                        {point}
-                      </li>
+                {/* Impact tiles: three numbers lifted from the bullets */}
+                {job.metrics && job.metrics.length > 0 ? (
+                  <dl className="mt-5 grid grid-cols-3 gap-2 sm:gap-3">
+                    {job.metrics.slice(0, 3).map((m: any, idx: number) => (
+                      <div
+                        key={m._key || m.label}
+                        className={`min-w-0 rounded-xl border-[3px] border-border p-2.5 sm:rounded-2xl sm:p-4 ${TILE_FILLS[idx % TILE_FILLS.length]}`}
+                      >
+                        <dd className="text-xl font-extrabold leading-none tracking-tight text-foreground tabular-nums sm:text-5xl">
+                          {m.value}
+                        </dd>
+                        <dt className="mt-2 break-words text-xs leading-snug text-foreground sm:text-small">{m.label}</dt>
+                      </div>
                     ))}
-                  </ul>
+                  </dl>
                 ) : null}
 
                 {/* Tech Stack Tags */}
                 {job.stack && job.stack.length > 0 ? (
-                  <div className="mt-5 flex flex-wrap gap-2 pt-2 border-t border-border/30">
+                  <div className="mt-5 flex flex-wrap gap-2">
                     {job.stack.map((tech: string) => (
                       <span
                         key={tech}
-                        className="rounded-full border border-border/80 bg-background px-3 py-1 font-mono text-xs text-foreground-subtle"
+                        className="pop-chip px-3 py-1 font-mono text-xs text-foreground"
                       >
                         {tech}
                       </span>
                     ))}
                   </div>
                 ) : null}
+
+                {/* Full bullets. With no tiles there is nothing to lead with, so show them open. */}
+                <details
+                  className="group/details mt-4"
+                  open={!(job.metrics && job.metrics.length > 0)}
+                >
+                  <summary className="flex min-h-11 w-fit cursor-pointer list-none items-center gap-2 rounded-md font-mono text-small font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent [&::-webkit-details-marker]:hidden">
+                    <span
+                      className="inline-block transition-transform duration-200 ease-out group-open/details:rotate-90"
+                      aria-hidden
+                    >
+                      ▸
+                    </span>
+                    Read the details
+                  </summary>
+                  <ul className="mt-2 flex flex-col gap-2.5">
+                    {job.highlights.map((point: string, idx: number) => (
+                      <li
+                        key={`${idx}-${point.substring(0, 10)}`}
+                        className="flex gap-3 text-body leading-relaxed text-foreground"
+                      >
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  {job.engineerHighlights && job.engineerHighlights.length > 0 ? (
+                    <ul className="mt-3 flex flex-col gap-2 border-l-[3px] border-border pl-4">
+                      {job.engineerHighlights.map((point: string) => (
+                        <li key={point} className="text-small text-foreground">
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </details>
               </article>
             </Reveal>
           );
         })}
       </div>
-
-      <Reveal>
-        <Milestones data={journey} />
-      </Reveal>
     </Section>
   );
 }

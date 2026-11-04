@@ -41,11 +41,16 @@ export function Hero({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
           {/* Left 7 Columns: Core Pitch & Typography */}
           <div className="lg:col-span-7 flex flex-col items-start">
-            <h1 className="text-5xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-6xl md:text-7xl">
-              {siteConfig.name}
-              <span className="text-accent">.</span>
+            <p className="mb-4 font-mono text-sm font-medium text-foreground">
+              <span className="text-accent">$</span> whoami
+            </p>
+            <h1 className="text-5xl font-extrabold leading-[1] tracking-tight text-foreground sm:text-6xl md:text-7xl">
+              {siteConfig.name.split(" ")[0]}{" "}
+              <span className="pop-title -rotate-2 bg-pink px-3 shadow-[5px_5px_0_var(--color-border)]">
+                {siteConfig.name.split(" ").slice(1).join(" ")}
+              </span>
             </h1>
-            <p className="mt-4 text-title font-medium text-foreground-muted">
+            <p className="mt-6 text-title font-semibold text-foreground">
               {siteConfig.role}
             </p>
             <p className="mt-4 max-w-xl text-body-lg text-foreground-muted leading-relaxed">
@@ -56,7 +61,7 @@ export function Hero({
             <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
               <a
                 href="#projects"
-                className="inline-flex touch-manipulation items-center justify-center rounded-lg bg-accent px-5 py-2.5 text-small font-medium text-accent-foreground transition-colors hover:bg-accent-hover active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background shadow-sm"
+                className="pop-btn inline-flex min-h-11 touch-manipulation items-center justify-center bg-accent px-5 py-2.5 text-small font-bold text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 View Projects
               </a>
@@ -64,7 +69,7 @@ export function Hero({
                 href={settings?.resumeUrl || siteConfig.links.resume}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex touch-manipulation items-center justify-center rounded-lg border border-border px-5 py-2.5 text-small font-medium text-foreground transition-colors hover:border-accent hover:text-accent active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="pop-btn inline-flex min-h-11 touch-manipulation items-center justify-center bg-surface px-5 py-2.5 text-small font-bold text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 Résumé
               </a>
@@ -72,7 +77,7 @@ export function Hero({
                 aria-label="Copy email address"
                 className="group inline-flex items-center gap-2 font-mono text-small text-foreground-muted transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded px-1.5 py-1"
               >
-                <span className="underline decoration-border/80 underline-offset-4 transition-colors group-hover:decoration-accent">
+                <span className="underline decoration-foreground underline-offset-4 transition-colors group-hover:decoration-accent">
                   {siteConfig.email}
                 </span>
               </EmailAction>
@@ -81,9 +86,9 @@ export function Hero({
 
           {/* Right 5 Columns: Activity Telemetry Panel */}
           <div className="lg:col-span-5 w-full">
-            <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-surface/60 p-5 sm:p-6 backdrop-blur-sm shadow-xl shadow-black/20 before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent">
+            <div className="pop-card relative p-5 sm:p-6 lg:rotate-[1.5deg] shadow-[8px_8px_0_var(--color-border)]">
               {/* Header: Title + Honest Mono Timestamp (no fake green dot) */}
-              <div className="flex items-center justify-between border-b border-border/60 pb-3.5">
+              <div className="flex items-center justify-between border-b-[3px] border-border pb-3.5">
                 <div className="flex items-center gap-2">
                   <Activity className="h-4 w-4 text-accent" aria-hidden />
                   <span className="font-mono text-xs font-semibold uppercase tracking-wider text-foreground">
@@ -96,14 +101,14 @@ export function Hero({
               </div>
 
               {/* Measured Telemetry Rows */}
-              <div className="divide-y divide-border/50">
+              <div className="divide-y-2 divide-border">
                 {/* Row 1: Currently Building — dynamic from Sanity siteSettings */}
                 <div className="py-4">
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-mono text-xs text-foreground-subtle">
                       Currently building
                     </span>
-                    <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-accent">
+                    <span className="inline-flex items-center gap-1.5 font-mono text-xs text-accent">
                       <span className="relative flex h-1.5 w-1.5">
                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75 motion-reduce:animate-none" />
                         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
@@ -138,8 +143,8 @@ export function Hero({
                       <p className="font-mono text-small font-medium text-foreground transition-colors group-hover:text-accent line-clamp-1">
                         {lastCommit.message}
                       </p>
-                      <div className="mt-1.5 flex items-center gap-1.5 font-mono text-[11px] text-foreground-subtle">
-                        <span className="rounded bg-background-subtle px-1.5 py-0.5 border border-border/60 text-foreground-muted">
+                      <div className="mt-1.5 flex items-center gap-1.5 font-mono text-xs text-foreground-subtle">
+                        <span className="rounded-md bg-mint px-1.5 py-0.5 border-2 border-border text-foreground">
                           {lastCommit.repo.split("/").pop()}
                         </span>
                       </div>
@@ -157,7 +162,7 @@ export function Hero({
                       <span className="font-mono text-small font-semibold text-foreground">
                         {totalContributions.toLocaleString()}
                       </span>
-                      <span className="text-[11px] text-foreground-muted">
+                      <span className="text-xs text-foreground-muted">
                         contributions
                       </span>
                     </div>
@@ -165,7 +170,7 @@ export function Hero({
 
                   {/* Real weekly commit bar sparkline from same payload */}
                   <div
-                    className="flex h-8 items-end gap-[3px] rounded-md bg-background-subtle/50 px-2 py-1.5 border border-border/40"
+                    className="flex h-8 items-end gap-[3px] rounded-md bg-background-subtle px-2 py-1.5 border-2 border-border"
                     role="img"
                     aria-label={`${totalContributions} contributions across 52 weeks`}
                   >
@@ -185,10 +190,10 @@ export function Hero({
                             style={{ height: `${heightPct}%` }}
                             className={`w-full rounded-[1px] transition-all group-hover/bar:scale-y-110 ${
                               isZero
-                                ? "bg-border/40"
+                                ? "bg-foreground/15"
                                 : count > 15
                                 ? "bg-accent"
-                                : "bg-accent/60"
+                                : "bg-accent/55"
                             }`}
                           />
                         </div>
@@ -207,12 +212,12 @@ export function Hero({
                       <span className="font-mono text-small font-semibold text-foreground">
                         500+ users
                       </span>
-                      <span className="text-[11px] text-foreground-muted">
+                      <span className="text-xs text-foreground-muted">
                         · 2 platforms
                       </span>
                     </div>
                   </div>
-                  <p className="mt-1 font-mono text-[11px] text-foreground-subtle">
+                  <p className="mt-1 font-mono text-xs text-foreground-subtle">
                     Live clinical & e-commerce microservices
                   </p>
                 </div>

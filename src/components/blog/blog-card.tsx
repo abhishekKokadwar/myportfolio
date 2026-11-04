@@ -7,7 +7,7 @@ export function BlogCard({ post }: { post: PostMeta }) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group flex touch-manipulation flex-col rounded-2xl border border-border bg-surface p-6 transition-[border-color,background-color] hover:border-border/90 hover:bg-surface/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background md:p-8"
+      className="group pop-card pop-press flex touch-manipulation flex-col p-6 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent md:p-8"
     >
       <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-xs text-foreground-subtle">
         <time dateTime={post.date}>{formatDate(post.date)}</time>
@@ -20,7 +20,7 @@ export function BlogCard({ post }: { post: PostMeta }) {
           {post.title}
         </span>
         <ArrowRight
-          className="mt-1.5 h-4 w-4 shrink-0 text-accent opacity-0 transition-opacity group-hover:opacity-100"
+          className="mt-1.5 h-4 w-4 shrink-0 text-accent transition-transform group-hover:translate-x-1"
           aria-hidden
         />
       </h3>
@@ -36,7 +36,7 @@ export function BlogCard({ post }: { post: PostMeta }) {
           {post.tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-full border border-border bg-background-subtle px-3 py-1 text-small text-foreground-muted font-mono text-xs"
+              className="pop-chip px-3 py-1 font-mono text-xs text-foreground"
             >
               {tag}
             </span>

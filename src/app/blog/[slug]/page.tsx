@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Nav } from "@/components/nav";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { MDXRemote } from "next-mdx-remote-client/rsc";
@@ -55,25 +56,28 @@ export default async function BlogPostPage({
   return (
     <>
       <ReadingProgress />
+      <Nav blogHref="/blog" />
 
-      <article className="px-6 py-16 md:px-12 md:py-24">
+      <article className="px-4 py-8 sm:px-6 md:px-12 md:py-14">
         <div className="mx-auto w-full max-w-6xl">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-small text-foreground-muted transition-colors hover:text-accent"
+            className="inline-flex min-h-11 items-center gap-2 font-mono text-small font-medium text-foreground transition-colors hover:text-accent"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden />
-            All posts
+            cd .. / blog
           </Link>
 
+          <div className="mt-4 gap-10 lg:grid lg:grid-cols-[minmax(0,1fr)_260px]">
+          <div className="pop-card min-w-0 p-5 shadow-[4px_4px_0_var(--color-border)] sm:p-6 md:p-10 md:shadow-[8px_8px_0_var(--color-border)]">
           {/* Header */}
-          <header className="mt-8 max-w-[68ch]">
+          <header className="max-w-[68ch]">
             <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-xs text-foreground-subtle">
               <time dateTime={post.date}>{formatDate(post.date)}</time>
               <span aria-hidden>·</span>
               <span>{post.readingTime} min</span>
             </div>
-            <h1 className="mt-4 text-4xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-5xl">
+            <h1 className="mt-4 text-4xl font-extrabold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
               {post.title}
             </h1>
             {post.tags.length > 0 ? (
@@ -81,7 +85,7 @@ export default async function BlogPostPage({
                 {post.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-border bg-surface px-3 py-1 text-small text-foreground-muted"
+                    className="pop-chip px-3 py-1 font-mono text-xs text-foreground"
                   >
                     {tag}
                   </span>
@@ -90,9 +94,8 @@ export default async function BlogPostPage({
             ) : null}
           </header>
 
-          {/* Body + TOC */}
-          <div className="mt-12 gap-12 lg:grid lg:grid-cols-[minmax(0,68ch)_1fr]">
-            <div className="min-w-0">
+          {/* Body */}
+            <div className="mt-10 min-w-0 max-w-[68ch]">
               {post.source === "sanity" && sanityBody ? (
                 <PortableTextRenderer value={sanityBody} />
               ) : post.content ? (
@@ -120,7 +123,7 @@ export default async function BlogPostPage({
               ) : null}
 
               {post.canonical ? (
-                <p className="mt-12 border-t border-border pt-6 text-small text-foreground-subtle">
+                <p className="mt-12 border-t-2 border-border pt-6 text-small text-foreground-muted">
                   Originally published on{" "}
                   <a
                     href={post.canonical}
@@ -134,6 +137,7 @@ export default async function BlogPostPage({
                 </p>
               ) : null}
             </div>
+          </div>
 
             <aside className="hidden lg:block">
               <div className="sticky top-24">

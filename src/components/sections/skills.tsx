@@ -46,10 +46,10 @@ export function SkillsStrip({ data = [] }: { data?: any[] }) {
   if (data.length === 0) return null;
   return (
     <div className="mt-10">
-      <h3 className="mb-4 font-mono text-xs font-medium tracking-wide text-foreground-muted">
+      <h3 className="mb-4 font-mono text-xs font-medium uppercase tracking-wider text-foreground">
         skills
       </h3>
-      <dl className="flex flex-col divide-y divide-black/[0.06] dark:divide-white/[0.06] border-y border-black/[0.06] dark:border-white/[0.06]">
+      <dl className="pop-card flex flex-col divide-y-2 divide-border overflow-hidden px-4 sm:px-6">
         {data.map((group: any) => (
           <div
             key={group._id || group.category}

@@ -1,16 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, DM_Mono } from "next/font/google";
 import { ThemeProvider, themeInitScript } from "@/components/theme/theme-provider";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const sans = Bricolage_Grotesque({
+  variable: "--font-sans-face",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const mono = DM_Mono({
+  variable: "--font-mono-face",
   subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 const SITE_URL =
@@ -18,7 +19,7 @@ const SITE_URL =
 
 const title = "Abhishek Kokadwar — Software Engineer";
 const description =
-  "Building AI systems, backend infrastructure, and security tooling. B.Tech IT + MBA student at IIITM Gwalior.";
+  "Building AI systems, backend infrastructure, and security tooling. Integrated dual degree (IT) student at IIIT Gwalior.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -61,7 +62,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0a0a0b",
+  themeColor: "#ffe45c",
 };
 
 export default function RootLayout({
@@ -72,9 +73,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      data-theme="dark"
+      data-theme="light"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
+      className={`${sans.variable} ${mono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <script suppressHydrationWarning dangerouslySetInnerHTML={{ __html: themeInitScript }} />

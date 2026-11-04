@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { RefreshCw } from "lucide-react";
 import type { ContributionData, ContributionDay } from "@/lib/data/github";
 import { formatStamp } from "@/lib/format";
 
 // Emerald intensity ramp, level 0-4. Level 0 is an empty cell.
 const LEVEL_CLASS = [
-  "bg-border/60",
+  "bg-foreground/10",
   "bg-accent/25",
   "bg-accent/50",
   "bg-accent/75",
@@ -97,6 +97,7 @@ export function Heatmap({
   const [calendar, setCalendar] = useState<ContributionData>(data);
   const [timeLabel, setTimeLabel] = useState<string>(updatedAt);
   const [isSyncing, setIsSyncing] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [syncStatus, setSyncStatus] = useState<"idle" | "live">("idle");
 
   const syncLive = async () => {
@@ -141,6 +142,12 @@ export function Heatmap({
     return buildCalendarMonths(calendar.weeks);
   }, [calendar.weeks]);
 
+  // Show the latest weeks first; the calendar scrolls left, not right.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollLeft = el.scrollWidth;
+  }, [calendarMonths]);
+
   return (
     <div>
       {/* Header: Total contributions · updated relative time + Sync button */}
@@ -163,7 +170,7 @@ export function Heatmap({
             onClick={syncLive}
             disabled={isSyncing}
             title="Sync live activity from GitHub"
-            className="group inline-flex items-center gap-1.5 rounded-full border border-border bg-background-subtle/80 px-2.5 py-1 font-mono text-[11px] text-foreground-muted transition-all hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent disabled:opacity-50 cursor-pointer"
+            className="group inline-flex items-center gap-1.5 rounded-full border-2 border-border bg-surface px-2.5 py-1 font-mono text-[11px] text-foreground-muted transition-all hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent disabled:opacity-50 cursor-pointer"
           >
             <RefreshCw
               className={`h-3 w-3 ${
@@ -176,10 +183,10 @@ export function Heatmap({
       </div>
 
       {/* Horizontally scrollable calendar with true calendar months */}
-      <div className="mt-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-border">
+      <div ref={scrollRef} className="pop-scroll mt-4 overflow-x-auto pb-3">
         <div className="min-w-max flex items-start">
           {/* Day of week labels on left (Mon, Wed, Fri) aligned with 7 dot rows */}
-          <div className="w-7 sm:w-8 shrink-0 flex flex-col font-mono text-[10px] text-foreground-subtle select-none">
+          <div className="w-7 sm:w-8 shrink-0 flex flex-col font-mono text-xs text-foreground-subtle select-none">
             {/* Header spacer to match month labels row height */}
             <div className="h-4 mb-1.5" />
             <div className="flex flex-col gap-1 sm:gap-1.5">
@@ -204,7 +211,7 @@ export function Heatmap({
               <div key={month.key} className="flex flex-col shrink-0">
                 {/* Month Name Header - PROPERLY CENTERED */}
                 <div className="h-4 mb-1.5 flex items-center justify-center text-center">
-                  <span className="font-mono text-[10px] font-medium text-foreground-subtle select-none">
+                  <span className="font-mono text-xs font-medium text-foreground-subtle select-none">
                     {month.label}
                   </span>
                 </div>

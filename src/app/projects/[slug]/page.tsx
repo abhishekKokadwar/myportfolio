@@ -37,7 +37,7 @@ export default async function ProjectCaseStudyPage({
 
   return (
     <>
-      <Nav spotlightIndex={spotlightIndex} />
+      <Nav blogHref={posts[0] ? `/blog/${posts[0].slug}` : "/blog"} />
       <main className="min-h-screen pt-24 pb-20 px-6 md:px-12 max-w-6xl mx-auto">
         {/* Back navigation */}
         <Link
@@ -52,12 +52,11 @@ export default async function ProjectCaseStudyPage({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column (Sticky Overview & Specs) */}
           <div className="lg:col-span-5 lg:sticky lg:top-28 flex flex-col gap-6">
-            <div className="inline-flex items-center gap-2 font-mono text-xs text-accent">
-              <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
-              <span>SPEC // {project.slug}</span>
+            <div className="inline-flex items-center gap-2 font-mono text-sm font-medium text-foreground">
+              <span><span className="text-accent">$</span> cat specs/{project.slug}</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
               {project.title}
             </h1>
 
@@ -67,13 +66,13 @@ export default async function ProjectCaseStudyPage({
 
             {/* Metrics */}
             {project.metrics && project.metrics.length > 0 ? (
-              <div className="grid grid-cols-3 divide-x divide-border/60 border-y border-border/60 py-4 my-2">
+              <div className="grid grid-cols-3 divide-x-2 divide-border border-y-2 border-border py-4 my-2">
                 {project.metrics.map((m: any, idx: number) => (
                   <div key={idx} className={`flex flex-col ${idx === 0 ? "pr-3" : idx === 1 ? "px-3 text-center" : "pl-3 text-right"}`}>
                     <span className="font-mono text-lg font-bold text-foreground tabular-nums">
                       {m.value}
                     </span>
-                    <span className="text-xs text-foreground-subtle truncate mt-1">
+                    <span className="text-xs text-foreground-subtle mt-1">
                       {m.label}
                     </span>
                   </div>
@@ -86,7 +85,7 @@ export default async function ProjectCaseStudyPage({
               {project.tags?.map((tech: string) => (
                 <span
                   key={tech}
-                  className="rounded-full border border-border bg-surface px-3 py-1 font-mono text-xs text-foreground-muted"
+                  className="pop-chip px-3 py-1 font-mono text-xs text-foreground"
                 >
                   {tech}
                 </span>
@@ -94,7 +93,7 @@ export default async function ProjectCaseStudyPage({
             </div>
 
             {/* External Links */}
-            <div className="flex items-center gap-4 pt-4 border-t border-border/40">
+            <div className="flex items-center gap-4 pt-4 border-t-2 border-border">
               {project.githubUrl ? (
                 <a
                   href={project.githubUrl}
@@ -153,7 +152,7 @@ export default async function ProjectCaseStudyPage({
                   {galleryImages.map((src: string, i: number) => (
                     <div
                       key={i}
-                      className="overflow-hidden rounded-2xl border border-border bg-surface p-2 shadow-xl"
+                      className="pop-card overflow-hidden p-2"
                     >
                       <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-background-subtle">
                         <Image
@@ -167,7 +166,7 @@ export default async function ProjectCaseStudyPage({
                   ))}
                 </div>
               ) : (
-                <div className="rounded-2xl border border-border bg-surface p-8 text-center font-mono text-small text-foreground-muted">
+                <div className="pop-card p-8 text-center font-mono text-small text-foreground-muted">
                   [ Architectural telemetry & diagrams active in local builds ]
                 </div>
               );
@@ -175,7 +174,7 @@ export default async function ProjectCaseStudyPage({
 
             {/* Detailed Content / Writeup */}
             {project.content ? (
-              <div className="rounded-2xl border border-border bg-surface p-8 prose prose-invert max-w-none">
+              <div className="pop-card p-8 prose max-w-none">
                 <h3 className="text-xl font-semibold text-foreground mb-4 font-mono">
                   // Architectural Decisions & Implementation
                 </h3>

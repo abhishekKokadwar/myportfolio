@@ -17,14 +17,13 @@ import { buildSpotlightIndex } from "@/lib/spotlight-index";
 export const revalidate = 300;
 
 import { sanityFetch } from "@/sanity/client";
-import { journeyQuery, experienceQuery, skillsQuery, projectsQuery, siteSettingsQuery, aboutQuery, contributionsQuery } from "@/sanity/queries";
+import { experienceQuery, skillsQuery, projectsQuery, siteSettingsQuery, aboutQuery, contributionsQuery } from "@/sanity/queries";
 
 export default async function Home() {
-  const [rawStats, coding, posts, journeyData, experienceData, skillsData, projectsData, settingsData, aboutData, contributionsData] = await Promise.all([
+  const [rawStats, coding, posts, experienceData, skillsData, projectsData, settingsData, aboutData, contributionsData] = await Promise.all([
     getGitHubStats(),
     getCodingStats(),
     getAllPosts(),
-    sanityFetch({ query: journeyQuery, tags: ["journey"] }),
     sanityFetch({ query: experienceQuery, tags: ["experience"] }),
     sanityFetch({ query: skillsQuery, tags: ["skill"] }),
     sanityFetch({ query: projectsQuery, tags: ["project"] }),
@@ -58,17 +57,25 @@ export default async function Home() {
         Skip to content
       </a>
       <LiveRefresh />
-      <Nav spotlightIndex={spotlightIndex} />
+      <Nav blogHref={posts[0] ? `/blog/${posts[0].slug}` : "/blog"} />
       <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
         <Hero settings={settingsData as any} stats={stats} />
-        <About data={aboutData as any} skills={skillsData as any} />
-        <Experience data={experienceData as any} journey={journeyData as any} />
+        <About
+          data={aboutData as any}
+          skills={skillsData as any}
+          mergedPrs={
+            (contributionsData as any[] | null)?.filter(
+              (c) => c.kind !== "membership" && c.status === "merged"
+            ).length || undefined
+          }
+        />
+        <Experience data={experienceData as any} />
         <OpenSource data={contributionsData as any} />
         <Projects data={projectsData as any} />
         <Dashboard stats={stats} coding={coding} />
         <Blog posts={posts} />
       </main>
-      <Footer />
+      <Footer resumeUrl={(settingsData as any)?.resumeUrl} />
     </>
   );
 }

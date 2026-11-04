@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import { getAllPosts } from "@/lib/blog";
 import { BlogCard } from "@/components/blog/blog-card";
+import { Nav } from "@/components/nav";
 
 export const revalidate = 60;
 
@@ -16,6 +17,8 @@ export default async function BlogIndexPage() {
   const posts = await getAllPosts();
 
   return (
+    <>
+    <Nav blogHref="/blog" />
     <main className="px-6 py-16 md:px-12 md:py-24">
       <div className="mx-auto w-full max-w-4xl">
         <Link
@@ -23,13 +26,13 @@ export default async function BlogIndexPage() {
           className="inline-flex items-center gap-2 text-small text-foreground-muted transition-colors hover:text-accent"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden />
-          Home
+          cd ..
         </Link>
 
         <header className="mb-12 mt-8 md:mb-16">
-          <p className="mb-3 flex items-center gap-2 text-small font-medium uppercase tracking-widest text-foreground-muted">
-            <span className="h-px w-6 bg-accent" aria-hidden />
-            Writing
+          <p className="mb-3 flex items-center gap-2 font-mono text-sm font-medium text-foreground">
+            <span className="text-accent">$</span>
+            ls ~/writing
           </p>
           <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl md:text-6xl">
             Essays & notes
@@ -53,5 +56,6 @@ export default async function BlogIndexPage() {
         )}
       </div>
     </main>
+    </>
   );
 }

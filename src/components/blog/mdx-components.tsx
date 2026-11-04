@@ -36,7 +36,7 @@ export const mdxComponents = {
     </h3>
   ),
   p: (props: ComponentPropsWithoutRef<"p">) => (
-    <p className="mt-6 text-body-lg leading-[1.75] text-foreground-muted" {...props} />
+    <p className="mt-6 text-body-lg leading-[1.75] text-foreground" {...props} />
   ),
   a: ({ href, ...props }: ComponentPropsWithoutRef<"a">) => (
     <a
@@ -48,10 +48,10 @@ export const mdxComponents = {
     />
   ),
   ul: (props: ComponentPropsWithoutRef<"ul">) => (
-    <ul className="mt-6 flex flex-col gap-3 text-body-lg leading-[1.7] text-foreground-muted" {...props} />
+    <ul className="mt-6 flex flex-col gap-3 text-body-lg leading-[1.7] text-foreground" {...props} />
   ),
   ol: (props: ComponentPropsWithoutRef<"ol">) => (
-    <ol className="mt-6 flex list-decimal flex-col gap-3 pl-6 text-body-lg leading-[1.7] text-foreground-muted" {...props} />
+    <ol className="mt-6 flex list-decimal flex-col gap-3 pl-6 text-body-lg leading-[1.7] text-foreground" {...props} />
   ),
   li: (props: ComponentPropsWithoutRef<"li">) => (
     <li className="marker:text-accent" {...props} />
@@ -65,7 +65,7 @@ export const mdxComponents = {
   strong: (props: ComponentPropsWithoutRef<"strong">) => (
     <strong className="font-semibold text-foreground" {...props} />
   ),
-  hr: () => <hr className="my-12 border-border" />,
+  hr: () => <hr className="my-12 border-t-2 border-border" />,
   img: ({ src, alt }: ComponentPropsWithoutRef<"img">) => {
     if (typeof src !== "string") return null;
     return (
@@ -75,7 +75,7 @@ export const mdxComponents = {
           alt={alt ?? ""}
           width={1200}
           height={675}
-          className="w-full rounded-2xl border border-border"
+          className="w-full rounded-2xl border-[3px] border-border"
           sizes="(max-width: 768px) 100vw, 768px"
         />
         {alt ? (
@@ -91,7 +91,7 @@ export const mdxComponents = {
     // Inline code only — fenced blocks are handled by <pre>/CodeBlock + Shiki.
     return (
       <code
-        className="rounded-md border border-border bg-background-subtle px-1.5 py-0.5 font-mono text-[0.9em] text-foreground"
+        className="rounded-md border-2 border-border bg-background-subtle px-1.5 py-0.5 font-mono text-[0.9em] text-foreground"
         {...props}
       />
     );

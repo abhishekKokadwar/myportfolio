@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-/** Thin emerald bar at the very top that fills as the reader scrolls the article. */
+/** Thin accent bar at the very top that fills as the reader scrolls the article. */
 export function ReadingProgress() {
   const [progress, setProgress] = useState(0);
 
@@ -23,7 +23,7 @@ export function ReadingProgress() {
 
   return (
     <div
-      className="fixed inset-x-0 top-0 z-[60] h-0.5 bg-transparent"
+      className="fixed inset-x-0 top-0 z-[60] h-1.5 bg-transparent"
       role="progressbar"
       aria-label="Reading progress"
       aria-valuenow={Math.round(progress)}

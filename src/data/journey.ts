@@ -26,7 +26,7 @@ export const journey: JourneyMilestone[] = [
     year: "2023",
     title: "Joined IIITM Gwalior & Learned C",
     summary:
-      "Started B.Tech IT + MBA at IIITM Gwalior. Mastered C programming, pointers, memory allocation, and low-level computing fundamentals.",
+      "Started the integrated dual degree in IT at IIIT Gwalior. Mastered C programming, pointers, memory allocation, and low-level computing fundamentals.",
     detail:
       "Began college at IIITM Gwalior. First real programming was C — pointers, memory management, and the core low-level computing fundamentals that make everything after it click.",
     tags: ["C", "Pointers", "Memory", "Fundamentals"],

@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/data/site.config";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/brand-icons";
-import { Spotlight } from "@/components/spotlight/spotlight";
 import type { SpotlightItem } from "@/lib/spotlight";
 import { cn } from "@/lib/utils";
 
@@ -81,8 +81,21 @@ function useActiveSection(ids: string[]) {
   return [active, setActive] as const;
 }
 
-export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
-  const [active, setActive] = useActiveSection(NAV_LINKS.map((l) => l.id));
+export function Nav({
+  blogHref,
+}: {
+  /** Kept so pages can still pass it; search was removed from the header. */
+  spotlightIndex?: SpotlightItem[];
+  /** Where "Blog" goes. One post: straight to it. Several: the list. */
+  blogHref?: string;
+}) {
+  const pathname = usePathname();
+  const onHome = pathname === "/";
+  const [activeRaw, setActive] = useActiveSection(NAV_LINKS.map((l) => l.id));
+  const active = onHome ? activeRaw : null;
+  // Off the home page "#about" has nothing to scroll to, so go to "/#about".
+  const resolve = (l: { id: string; href: string }) =>
+    l.id === "blog" && blogHref ? blogHref : onHome ? l.href : `/${l.href}`;
   const [menuOpen, setMenuOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -160,25 +173,32 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-0 bg-transparent pointer-events-none py-3 md:py-4 transition-colors duration-200">
-      <nav className="relative mx-auto flex w-full max-w-6xl items-center justify-end px-4 sm:px-6 md:px-12">
+    <header className="sticky top-0 z-50 w-full border-b-[3px] border-border bg-background py-3">
+      <nav className="relative mx-auto flex w-full max-w-6xl items-center justify-between px-4 sm:px-6 md:px-12">
+        <Link
+          href="/"
+          className="font-mono text-sm font-bold tracking-tight text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        >
+          {siteConfig.name.split(" ")[0]}
+          <span className="text-accent">.</span>
+        </Link>
 
         {/* Center: Sleek floating segmented pill navigation on desktop — dead-centered via absolute positioning */}
         <div className="pointer-events-auto hidden md:flex items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          <ul className="flex items-center gap-1 rounded-full border border-border/80 bg-surface/90 p-1 backdrop-blur-md shadow-xs">
+          <ul className="flex items-center gap-1 rounded-full border-[3px] border-border bg-surface p-1 shadow-[4px_4px_0_var(--color-border)]">
             {DESKTOP_LINKS.map((link) => {
               const isActive = active === link.id;
               return (
                 <li key={link.href}>
                   <a
-                    href={link.href}
-                    onClick={(e) => handleNavClick(e, link.href)}
+                    href={resolve(link)}
+                    onClick={(e) => handleNavClick(e, resolve(link))}
                     aria-current={isActive ? "true" : undefined}
                     className={cn(
-                      "inline-flex items-center justify-center h-7 px-3 rounded-full text-xs font-mono leading-none transition-colors duration-150",
+                      "inline-flex items-center justify-center h-8 px-3 rounded-full text-xs font-mono font-medium leading-none transition-colors duration-150",
                       isActive
-                        ? "bg-accent/15 text-accent font-medium shadow-xs"
-                        : "text-foreground-muted hover:text-foreground hover:bg-white/[0.04]"
+                        ? "bg-accent text-accent-foreground"
+                        : "text-foreground hover:bg-background-subtle"
                     )}
                   >
                     {link.label}
@@ -189,12 +209,18 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
           </ul>
         </div>
 
-        {/* Right: Spotlight, GitHub Profile, Contact CTA & Mobile Menu Trigger */}
-        <div className="pointer-events-auto flex items-center gap-1 rounded-full border border-border/80 bg-surface/90 p-1 backdrop-blur-md shadow-xs">
-          <Spotlight
-            items={spotlightIndex}
-            triggerClassName="h-7 px-2.5 rounded-full border-0 bg-transparent text-xs text-foreground-muted hover:text-accent hover:bg-white/[0.04] focus-visible:ring-1"
-          />
+        {/* Right: LinkedIn, GitHub Profile, Contact CTA & Mobile Menu Trigger */}
+        <div className="pointer-events-auto flex items-center gap-1 rounded-full border-[3px] border-border bg-surface p-1 shadow-[4px_4px_0_var(--color-border)]">
+          <a
+            href={siteConfig.links.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn profile"
+            title="LinkedIn profile"
+            className="hidden sm:inline-flex h-8 w-8 items-center justify-center rounded-full text-foreground-muted transition-colors hover:bg-background-subtle hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+          >
+            <LinkedinIcon className="h-3.5 w-3.5" />
+          </a>
 
           <a
             href={siteConfig.links.github}
@@ -202,7 +228,7 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
             rel="noopener noreferrer"
             aria-label="GitHub profile"
             title="GitHub profile"
-            className="hidden sm:inline-flex h-7 w-7 items-center justify-center rounded-full text-foreground-muted transition-colors hover:bg-white/[0.04] hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+            className="hidden sm:inline-flex h-8 w-8 items-center justify-center rounded-full text-foreground-muted transition-colors hover:bg-background-subtle hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
           >
             <GithubIcon className="h-3.5 w-3.5" />
           </a>
@@ -210,7 +236,7 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
           <a
             href={`mailto:${siteConfig.email}`}
             aria-label="Get in touch"
-            className="hidden lg:inline-flex items-center gap-1 h-7 px-2.5 rounded-full text-[11px] font-mono text-foreground-muted transition-colors hover:bg-white/[0.04] hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+            className="hidden lg:inline-flex items-center gap-1 h-8 px-2.5 rounded-full text-xs font-mono text-foreground-muted transition-colors hover:bg-background-subtle hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
           >
             <span>contact</span>
             <ArrowUpRight className="h-3 w-3 text-accent" />
@@ -224,7 +250,7 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
             aria-label="Open navigation menu"
             aria-expanded={menuOpen}
             aria-haspopup="dialog"
-            className="inline-flex h-7 w-7 touch-manipulation items-center justify-center rounded-full text-foreground-muted transition-colors hover:bg-white/[0.04] hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent md:hidden"
+            className="inline-flex h-8 w-8 touch-manipulation items-center justify-center rounded-full text-foreground-muted transition-colors hover:bg-background-subtle hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent md:hidden"
           >
             <Menu className="h-3.5 w-3.5" aria-hidden />
           </button>
@@ -237,7 +263,7 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
             <div className="fixed inset-0 z-[60] md:hidden">
               {/* Backdrop */}
               <div
-                className="absolute inset-0 bg-background/80 backdrop-blur-sm transition-opacity"
+                className="absolute inset-0 bg-foreground/40 transition-opacity"
                 onClick={() => setMenuOpen(false)}
                 aria-hidden
               />
@@ -248,11 +274,11 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
                 role="dialog"
                 aria-modal="true"
                 aria-label="Navigation menu"
-                className="absolute right-0 top-0 flex h-full w-80 max-w-[85vw] flex-col justify-between border-l border-border bg-background p-6 shadow-2xl"
+                className="absolute right-0 top-0 flex h-full w-80 max-w-[85vw] flex-col justify-between border-l-[3px] border-border bg-background p-6"
               >
                 <div>
                   {/* Drawer Header */}
-                  <div className="flex items-center justify-between border-b border-border/60 pb-4">
+                  <div className="flex items-center justify-between border-b border-border pb-4">
                     <span className="font-mono text-sm font-semibold tracking-tight text-foreground">
                       {siteConfig.name.split(" ")[0]}
                       <span className="text-accent">.</span>
@@ -261,7 +287,7 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
                       type="button"
                       onClick={() => setMenuOpen(false)}
                       aria-label="Close menu"
-                      className="inline-flex h-8 w-8 touch-manipulation items-center justify-center rounded-lg border border-border text-foreground-muted transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                      className="inline-flex h-8 w-8 touch-manipulation items-center justify-center rounded-lg border-2 border-border text-foreground transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                     >
                       <X className="h-4 w-4" aria-hidden />
                     </button>
@@ -274,16 +300,16 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
                       return (
                         <li key={link.href}>
                           <a
-                            href={link.href}
+                            href={resolve(link)}
                             onClick={(e) => {
                               setMenuOpen(false);
-                              handleNavClick(e, link.href);
+                              handleNavClick(e, resolve(link));
                             }}
                             aria-current={isActive ? "true" : undefined}
                             className={cn(
                               "flex items-center justify-between touch-manipulation rounded-lg px-3.5 py-2.5 text-sm font-mono transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
                               isActive
-                                ? "bg-accent/15 text-accent font-medium border border-accent/20"
+                                ? "bg-accent text-accent-foreground font-medium border-2 border-border"
                                 : "text-foreground-muted hover:bg-surface hover:text-foreground"
                             )}
                           >
@@ -299,7 +325,7 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
                 </div>
 
                 {/* Drawer Footer info & social links */}
-                <div className="border-t border-border/60 pt-4 flex flex-col gap-3">
+                <div className="border-t border-border pt-4 flex flex-col gap-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-mono text-foreground-subtle">Connect</span>
                     <div className="flex items-center gap-2">
@@ -308,7 +334,7 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="GitHub profile"
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border text-foreground-muted transition-colors hover:border-accent hover:text-accent"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg border-2 border-border text-foreground transition-colors hover:border-accent hover:text-accent"
                       >
                         <GithubIcon className="h-4 w-4" />
                       </a>
@@ -317,7 +343,7 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="LinkedIn profile"
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border text-foreground-muted transition-colors hover:border-accent hover:text-accent"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg border-2 border-border text-foreground transition-colors hover:border-accent hover:text-accent"
                       >
                         <LinkedinIcon className="h-4 w-4" />
                       </a>
@@ -325,7 +351,7 @@ export function Nav({ spotlightIndex }: { spotlightIndex: SpotlightItem[] }) {
                   </div>
                   <a
                     href={`mailto:${siteConfig.email}`}
-                    className="flex items-center justify-between rounded-lg border border-border/80 bg-surface/40 px-3 py-2 text-xs font-mono text-foreground-muted transition-colors hover:border-accent/40 hover:text-foreground"
+                    className="flex items-center justify-between rounded-lg border-2 border-border bg-surface px-3 py-2 text-xs font-mono text-foreground-muted transition-colors hover:border-accent/40 hover:text-foreground"
                   >
                     <span className="truncate">{siteConfig.email}</span>
                     <ArrowUpRight className="h-3 w-3 shrink-0 text-accent" />

@@ -101,7 +101,7 @@ export const portableTextComponents: PortableTextComponents = {
       <span className="line-through text-foreground-subtle">{children}</span>
     ),
     code: ({ children }) => (
-      <code className="rounded-md border border-border bg-background-subtle px-1.5 py-0.5 font-mono text-[0.9em] text-foreground">
+      <code className="rounded-md border-2 border-border bg-background-subtle px-1.5 py-0.5 font-mono text-[0.9em] text-foreground">
         {children}
       </code>
     ),
@@ -135,7 +135,7 @@ export const portableTextComponents: PortableTextComponents = {
             alt={value.alt || ""}
             width={1200}
             height={675}
-            className="w-full rounded-2xl border border-border"
+            className="w-full rounded-2xl border-[3px] border-border"
             sizes="(max-width: 768px) 100vw, 768px"
           />
           {value.caption ? (
@@ -178,22 +178,22 @@ export const portableTextComponents: PortableTextComponents = {
       > = {
         info: {
           icon: Info,
-          border: "border-blue-500/30 bg-blue-500/5",
-          iconColor: "text-blue-400",
+          border: "border-2 border-border bg-sky",
+          iconColor: "text-accent",
         },
         tip: {
           icon: Lightbulb,
-          border: "border-emerald-500/30 bg-emerald-500/5",
-          iconColor: "text-emerald-400",
+          border: "border-2 border-border bg-mint",
+          iconColor: "text-foreground",
         },
         warning: {
           icon: AlertTriangle,
-          border: "border-amber-500/30 bg-amber-500/5",
-          iconColor: "text-amber-400",
+          border: "border-2 border-border bg-background-subtle",
+          iconColor: "text-foreground",
         },
         quote: {
           icon: Quote,
-          border: "border-accent/40 bg-accent/5",
+          border: "border-2 border-border bg-blush",
           iconColor: "text-accent",
         },
       };

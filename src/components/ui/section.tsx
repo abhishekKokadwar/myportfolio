@@ -25,7 +25,7 @@ export function Section({
       className={cn(
         "scroll-mt-24 md:scroll-mt-28 px-6 py-16 md:px-12 md:py-[88px]",
         variant === "raised" ? "bg-background-subtle" : "bg-background",
-        hasBorder && "border-t border-black/[0.06] dark:border-white/[0.06]",
+        hasBorder && "border-t-[3px] border-border",
         className
       )}
     >
@@ -51,21 +51,21 @@ export function SectionHeading({
   return (
     <Reveal className={cn("mb-8 sm:mb-10", className)}>
       {eyebrow ? (
-        <p className="mb-2 font-mono text-xs text-foreground-subtle">
+        <p className="mb-3 font-mono text-sm font-medium text-foreground">
           {eyebrow.replace(/^\/\/\s*/, "")}
         </p>
       ) : null}
-      <h2 className="group/heading relative text-4xl font-semibold tracking-tight text-foreground sm:text-5xl md:text-6xl flex items-baseline gap-3">
+      <h2 className="group/heading relative text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+        <span className="pop-title">{children}</span>
         {id ? (
           <a
             href={`#${id}`}
             aria-label={`Link to ${id}`}
-            className="font-mono text-xs sm:text-sm font-normal text-foreground-subtle opacity-0 transition-opacity hover:text-accent group-hover/heading:opacity-100 select-none"
+            className="absolute -left-1 top-1/2 hidden -translate-x-full -translate-y-1/2 pr-3 font-mono text-sm font-normal text-foreground-subtle opacity-0 transition-opacity hover:text-accent group-hover/heading:opacity-100 select-none lg:block"
           >
-            #{id}
+            #
           </a>
         ) : null}
-        <span>{children}</span>
       </h2>
     </Reveal>
   );

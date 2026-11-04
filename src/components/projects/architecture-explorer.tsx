@@ -101,10 +101,10 @@ export function ArchitectureExplorer({ nodes }: { nodes: ArchitectureNode[] }) {
                 aria-controls={`${baseId}-panel`}
                 tabIndex={isActive ? 0 : -1}
                 onClick={() => setActiveIndex(i)}
-                className={`group flex w-full min-h-11 flex-1 touch-manipulation flex-col gap-1 rounded-xl border p-3 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:min-w-0 ${
+                className={`group flex w-full min-h-11 flex-1 touch-manipulation flex-col gap-1 rounded-xl border-2 p-3 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:min-w-0 ${
                   isActive
-                    ? "-translate-y-0.5 border-accent bg-accent-subtle shadow-sm shadow-accent/10"
-                    : "border-border hover:-translate-y-0.5 hover:border-accent/50"
+                    ? "-translate-y-0.5 border-border bg-sky shadow-[3px_3px_0_var(--color-border)]"
+                    : "border-border bg-surface hover:-translate-y-0.5 hover:bg-background-subtle"
                 }`}
               >
                 <span className="flex items-center gap-2">
@@ -118,12 +118,12 @@ export function ArchitectureExplorer({ nodes }: { nodes: ArchitectureNode[] }) {
                     {node.label}
                   </span>
                 </span>
-                <span className="truncate text-[0.7rem] text-foreground-subtle">
+                <span className="truncate text-xs text-foreground-subtle">
                   {node.role}
                 </span>
               </button>
 
-              {/* Flow connector — fills emerald up to the active node */}
+              {/* Flow connector — fills up to the active node */}
               {i < nodes.length - 1 ? (
                 <ArrowRight
                   className={`mx-1 hidden h-4 w-4 shrink-0 self-center transition-colors sm:block ${
@@ -143,7 +143,7 @@ export function ArchitectureExplorer({ nodes }: { nodes: ArchitectureNode[] }) {
         id={`${baseId}-panel`}
         aria-labelledby={`${baseId}-tab-${active.id}`}
         tabIndex={0}
-        className="mt-6 rounded-xl border border-border bg-background-subtle p-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="mt-6 rounded-xl border-2 border-border bg-surface p-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
         <motion.div
           key={active.id}
