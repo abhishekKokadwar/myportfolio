@@ -11,7 +11,7 @@ import "server-only";
 const PROFILE_NAME = "abhishek_1005";
 const CODOLIO_URL = `https://api.codolio.com/profile?userKey=${PROFILE_NAME}`;
 const CODOLIO_PROFILE = `https://codolio.com/profile/${PROFILE_NAME}`;
-const REVALIDATE_SECONDS = 21_600; // 6h — coding stats change slowly
+const REVALIDATE_SECONDS = 900; // 15 min
 
 import statsJson from "@/data/stats.json";
 

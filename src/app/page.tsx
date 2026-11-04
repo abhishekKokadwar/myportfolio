@@ -13,8 +13,8 @@ import { getCodingStats } from "@/lib/data/codolio";
 import { getAllPosts } from "@/lib/blog";
 import { buildSpotlightIndex } from "@/lib/spotlight-index";
 
-// Rebuild the page's live data at most hourly (ISR) — §0.
-export const revalidate = 3600;
+// Rebuild the page at most every 5 min (ISR) so commits and DSA stats stay fresh.
+export const revalidate = 300;
 
 import { sanityFetch } from "@/sanity/client";
 import { journeyQuery, experienceQuery, skillsQuery, projectsQuery, siteSettingsQuery, aboutQuery } from "@/sanity/queries";

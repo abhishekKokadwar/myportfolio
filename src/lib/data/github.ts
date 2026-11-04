@@ -12,7 +12,7 @@ import fallbackData from "@/data/github-fallback.json";
  */
 
 const USERNAME = "abhishekKokadwar";
-const REVALIDATE_SECONDS = 3600; // hourly
+const REVALIDATE_SECONDS = 300; // 5 min (token = 5000 req/hr; ~10 calls per refresh)
 
 const REST = "https://api.github.com";
 const GRAPHQL = "https://api.github.com/graphql";
