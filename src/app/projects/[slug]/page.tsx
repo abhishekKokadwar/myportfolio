@@ -126,7 +126,6 @@ export default async function ProjectCaseStudyPage({
             {/* Gallery Images */}
             {(() => {
               const fallbackImages: Record<string, string[]> = {
-                ayusynapse: ["/projects/ayusynapse.jpg"],
                 "mcp-zero-trust-security-gateway": ["/projects/mcp-zero-trust.jpg"],
                 "mcp-zero-trust-gateway": ["/projects/mcp-zero-trust.jpg"],
                 cidra: ["/projects/cidra.jpg"],

@@ -122,25 +122,4 @@ export const projects: Project[] = [
     techStack: ["Python", "FastAPI", "Docker", "SQLite", "React", "Tailwind CSS"],
     github: "https://github.com/nabrahma/MCP_Zero-Trust_Gateway_BTP",
   },
-  {
-    slug: "ayusynapse",
-    title: "AyuSynapse — Clinical Trial Matching Pipeline",
-    metrics: [
-      { value: "Solo", label: "hackathon build" },
-      { value: "FHIR", label: "EMR parsing" },
-      { value: "RAG", label: "trial ranking" },
-    ],
-    recruiter: {
-      overview:
-        "An AI-integrated pipeline that matches patients to clinical trials by reading their medical records and ranking eligible trials.",
-      impact:
-        "Built solo at a Healthcare AI Hackathon — parses FHIR EMRs, extracts medical entities via fine-tuned BioBERT, and ranks trial candidates with a RAG pipeline.",
-    },
-    engineer: {
-      summary:
-        "Parses FHIR EMRs, extracts medical entities via fine-tuned BioBERT NER, indexes embeddings in ChromaDB for semantic retrieval over trial eligibility criteria, then orchestrates a LangChain RAG workflow for downstream filtering and candidate ranking.",
-    },
-    techStack: ["Python", "BioBERT", "LangChain", "ChromaDB", "FHIR", "RAG"],
-    github: "https://github.com/abhishekKokadwar/ayusynapse3.0",
-  },
 ];

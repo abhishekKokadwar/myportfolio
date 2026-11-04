@@ -11,14 +11,12 @@ import Image from "next/image";
 import { urlForImage } from "@/lib/sanity-image";
 
 const fallbackImages: Record<string, string> = {
-  ayusynapse: "/projects/ayusynapse.jpg",
   "mcp-zero-trust-security-gateway": "/projects/mcp-zero-trust.jpg",
   "mcp-zero-trust-gateway": "/projects/mcp-zero-trust.jpg",
   cidra: "/projects/cidra.jpg",
 };
 
 const PROJECT_HIGHLIGHTS: Record<string, string> = {
-  ayusynapse: "Sub-100ms WebRTC consultation & real-time EHR sync",
   "mcp-zero-trust-security-gateway": "mTLS reverse proxy with sub-millisecond policy engine",
   "mcp-zero-trust-gateway": "mTLS reverse proxy with sub-millisecond policy engine",
   cidra: "AST static differential parsing with risk score classification",
