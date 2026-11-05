@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import { richBodyMembers } from './richBody'
 
 export const projectType = defineType({
   name: 'project',
@@ -36,9 +37,10 @@ export const projectType = defineType({
     }),
     defineField({
       name: 'content',
-      title: 'Detailed Content',
+      title: 'Case study write-up',
+      description: 'Use Heading 2 for each section (Problem, Solution, Architecture, Results). They become the "On this page" box on the right.',
       type: 'array',
-      of: [{ type: 'block' }, { type: 'image' }],
+      of: richBodyMembers,
     }),
     defineField({
       name: 'images',

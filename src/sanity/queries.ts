@@ -107,6 +107,12 @@ export const projectBySlugQuery = groq`*[_type == "project" && slug.current == $
   content
 }`
 
+/** Title and slug of every project, in the same order as the home list. Used for "Next project". */
+export const projectNavQuery = groq`*[_type == "project" && defined(slug.current)] | order(_createdAt desc) {
+  title,
+  "slug": slug.current
+}`
+
 export const postsQuery = groq`*[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
   _id,
   title,

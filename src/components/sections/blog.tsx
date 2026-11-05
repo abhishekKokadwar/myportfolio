@@ -9,7 +9,7 @@ export function Blog({ posts }: { posts: PostMeta[] }) {
   if (posts.length === 0) return null;
 
   return (
-    <Section id="blog" variant="raised">
+    <Section id="blog" variant="base">
       <div className="flex items-end justify-between gap-4">
         <SectionHeading id="blog">Blog</SectionHeading>
         <Link
@@ -21,10 +21,10 @@ export function Blog({ posts }: { posts: PostMeta[] }) {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 gap-6">
+      <div className="border-b-[3px] border-border">
         {posts.slice(0, 3).map((post, i) => (
           <Reveal key={post.slug} delay={i * 0.05}>
-            <BlogCard post={post} />
+            <BlogCard post={post} index={i} />
           </Reveal>
         ))}
       </div>

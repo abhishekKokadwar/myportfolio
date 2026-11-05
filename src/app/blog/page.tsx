@@ -44,9 +44,9 @@ export default async function BlogIndexPage() {
         </header>
 
         {posts.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6">
-            {posts.map((post) => (
-              <BlogCard key={post.slug} post={post} />
+          <div className="border-b-[3px] border-border">
+            {posts.map((post, i) => (
+              <BlogCard key={post.slug} post={post} index={i} />
             ))}
           </div>
         ) : (

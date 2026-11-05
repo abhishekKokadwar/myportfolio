@@ -177,15 +177,15 @@ export function Nav({
       <nav className="relative mx-auto flex w-full max-w-6xl items-center justify-between px-4 sm:px-6 md:px-12">
         <Link
           href="/"
-          className="font-mono text-sm font-bold tracking-tight text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          className="inline-block -rotate-3 rounded-xl bg-foreground px-3 py-1.5 font-mono text-sm font-bold tracking-tight text-background transition-transform duration-150 hover:rotate-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           {siteConfig.name.split(" ")[0]}
-          <span className="text-accent">.</span>
+          <span className="text-pink">.</span>
         </Link>
 
-        {/* Center: Sleek floating segmented pill navigation on desktop — dead-centered via absolute positioning */}
+        {/* Center: plain links on the bar, active one filled. Dead-centered via absolute positioning */}
         <div className="pointer-events-auto hidden md:flex items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          <ul className="flex items-center gap-1 rounded-full border-[3px] border-border bg-surface p-1 shadow-[4px_4px_0_var(--color-border)]">
+          <ul className="flex items-center gap-1">
             {DESKTOP_LINKS.map((link) => {
               const isActive = active === link.id;
               return (
@@ -195,10 +195,10 @@ export function Nav({
                     onClick={(e) => handleNavClick(e, resolve(link))}
                     aria-current={isActive ? "true" : undefined}
                     className={cn(
-                      "inline-flex items-center justify-center h-8 px-3 rounded-full text-xs font-mono font-medium leading-none transition-colors duration-150",
+                      "inline-flex h-9 items-center justify-center rounded-full px-3.5 font-mono text-xs font-medium leading-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
                       isActive
                         ? "bg-accent text-accent-foreground"
-                        : "text-foreground hover:bg-background-subtle"
+                        : "text-foreground underline-offset-4 hover:underline"
                     )}
                   >
                     {link.label}
@@ -209,17 +209,17 @@ export function Nav({
           </ul>
         </div>
 
-        {/* Right: LinkedIn, GitHub Profile, Contact CTA & Mobile Menu Trigger */}
-        <div className="pointer-events-auto flex items-center gap-1 rounded-full border-[3px] border-border bg-surface p-1 shadow-[4px_4px_0_var(--color-border)]">
+        {/* Right: LinkedIn, GitHub, and the mobile menu trigger */}
+        <div className="pointer-events-auto flex items-center gap-1">
           <a
             href={siteConfig.links.linkedin}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn profile"
             title="LinkedIn profile"
-            className="hidden sm:inline-flex h-8 w-8 items-center justify-center rounded-full text-foreground-muted transition-colors hover:bg-background-subtle hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+            className="hidden sm:inline-flex h-11 w-11 items-center justify-center rounded-xl text-foreground transition-colors hover:bg-background-subtle hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
-            <LinkedinIcon className="h-3.5 w-3.5" />
+            <LinkedinIcon className="h-5 w-5" />
           </a>
 
           <a
@@ -228,18 +228,9 @@ export function Nav({
             rel="noopener noreferrer"
             aria-label="GitHub profile"
             title="GitHub profile"
-            className="hidden sm:inline-flex h-8 w-8 items-center justify-center rounded-full text-foreground-muted transition-colors hover:bg-background-subtle hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
+            className="hidden sm:inline-flex h-11 w-11 items-center justify-center rounded-xl text-foreground transition-colors hover:bg-background-subtle hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
-            <GithubIcon className="h-3.5 w-3.5" />
-          </a>
-
-          <a
-            href={`mailto:${siteConfig.email}`}
-            aria-label="Get in touch"
-            className="hidden lg:inline-flex items-center gap-1 h-8 px-2.5 rounded-full text-xs font-mono text-foreground-muted transition-colors hover:bg-background-subtle hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
-          >
-            <span>contact</span>
-            <ArrowUpRight className="h-3 w-3 text-accent" />
+            <GithubIcon className="h-5 w-5" />
           </a>
 
           {/* Mobile menu trigger */}
@@ -250,9 +241,9 @@ export function Nav({
             aria-label="Open navigation menu"
             aria-expanded={menuOpen}
             aria-haspopup="dialog"
-            className="inline-flex h-8 w-8 touch-manipulation items-center justify-center rounded-full text-foreground-muted transition-colors hover:bg-background-subtle hover:text-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent md:hidden"
+            className="inline-flex h-11 w-11 touch-manipulation items-center justify-center rounded-xl border-[3px] border-border bg-surface text-foreground shadow-[3px_3px_0_var(--color-border)] transition-[transform,box-shadow] duration-150 hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent md:hidden"
           >
-            <Menu className="h-3.5 w-3.5" aria-hidden />
+            <Menu className="h-5 w-5" aria-hidden />
           </button>
         </div>
       </nav>

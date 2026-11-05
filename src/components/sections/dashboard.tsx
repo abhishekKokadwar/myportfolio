@@ -1,4 +1,4 @@
-import { ArrowUpRight, GitCommitHorizontal } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { Reveal } from "@/components/ui/reveal";
 import { Heatmap } from "@/components/dashboard/heatmap";
@@ -16,8 +16,6 @@ function relativeTime(iso: string): string {
   return `${Math.floor(days / 30)}mo ago`;
 }
 
-const CARD = "pop-card p-5";
-
 export function Dashboard({
   stats,
   coding,
@@ -34,40 +32,48 @@ export function Dashboard({
   const easyPct = Math.max(0, 100 - mediumPct - hardPct);
 
   return (
-    <Section id="dashboard" variant="base">
+    <Section id="dashboard" variant="raised">
       <SectionHeading id="dashboard">Activity</SectionHeading>
 
-      <Reveal className={CARD}>
-        <Heatmap data={contributions} updatedAt={stats.updatedAt} />
+      <Reveal>
+        <Heatmap
+          data={contributions}
+          updatedAt={stats.updatedAt}
+          rating={coding.contestRating}
+        />
       </Reveal>
 
-      <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-5 items-stretch">
-        {/* Recent commits */}
-        <Reveal className={`${CARD} lg:col-span-3`}>
-          <div className="flex items-center justify-between border-b-2 border-border pb-3">
-            <h3 className="flex items-center gap-2 text-body font-semibold text-foreground">
-              <GitCommitHorizontal className="h-4 w-4 text-accent" aria-hidden />
-              <span className="font-mono">git log --oneline</span>
+      <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-[1.3fr_1fr]">
+        {/* Recent commits: open list */}
+        <Reveal>
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 border-b-[3px] border-border pb-3">
+            <h3 className="whitespace-nowrap font-mono text-lg font-extrabold tracking-tight text-foreground">
+              git log --oneline
             </h3>
             <a
               href={siteConfig.links.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-1 font-mono text-xs text-foreground-subtle transition-colors hover:text-accent"
+              className="inline-flex min-h-11 items-center gap-1 font-mono text-xs text-foreground underline underline-offset-4 transition-colors hover:text-accent"
             >
-              <span>github.com/abhishekKokadwar</span>
-              <ArrowUpRight className="h-3.5 w-3.5 opacity-70 group-hover:opacity-100" aria-hidden />
+              github.com/abhishekKokadwar
+              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
             </a>
           </div>
-          <ul className="mt-3 flex flex-col divide-y-2 divide-border">
-            {recentCommits.slice(0, 4).map((c) => (
-              <li key={c.sha} className="py-2.5 first:pt-0 last:pb-0">
-                <a href={c.url} target="_blank" rel="noopener noreferrer" className="group block">
+          <ul>
+            {recentCommits.slice(0, 3).map((c) => (
+              <li key={c.sha} className="border-b-2 border-border last:border-b-0">
+                <a
+                  href={c.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                >
                   <p className="truncate font-mono text-small text-foreground transition-colors group-hover:text-accent">
                     <span className="mr-2 rounded bg-mint px-1.5 py-0.5 text-xs">{c.sha.slice(0, 7)}</span>
                     {c.message}
                   </p>
-                  <p className="mt-1 font-mono text-xs text-foreground-subtle">
+                  <p className="mt-1 font-mono text-xs text-foreground-muted">
                     {c.repo.split("/").pop()} · {relativeTime(c.date)}
                   </p>
                 </a>
@@ -76,57 +82,49 @@ export function Dashboard({
           </ul>
         </Reveal>
 
-        {/* Coding stats, live from Codolio */}
-        <Reveal className={`${CARD} lg:col-span-2 flex flex-col justify-between`}>
-          <div>
-            <div className="flex items-baseline justify-between gap-4">
-              <div>
-                <div className="font-mono text-4xl font-semibold tracking-tight text-foreground">
-                  {coding.contestRating}
-                </div>
-                <div className="mt-1 text-small text-foreground-muted">LeetCode contest rating</div>
-              </div>
-              <div className="text-right font-mono text-xs text-foreground-subtle">
-                {coding.contestsCount} contests
-                <br />
-                {coding.activeDays} coding days · {coding.longestStreak} streak
-              </div>
-            </div>
-
-            <div className="mt-5 flex items-baseline justify-between border-t-2 border-border pt-4">
-              <span className="text-small text-foreground-muted">Problems solved</span>
-              <span className="font-mono text-3xl font-semibold text-foreground">{coding.total}</span>
-            </div>
-
-            <dl className="mt-4 flex flex-col gap-3">
-              {[
-                ["Easy", coding.easy, easyPct, "bg-mint"],
-                ["Medium", coding.medium, mediumPct, "bg-accent"],
-                ["Hard", coding.hard, hardPct, "bg-pink"],
-              ].map(([label, n, share, fill]) => (
-                <div key={label as string}>
-                  <div className="flex items-baseline justify-between text-small">
-                    <dt className="text-foreground">{label}</dt>
-                    <dd className="font-mono text-foreground">
-                      {n} <span className="text-xs text-foreground-subtle">{share}%</span>
-                    </dd>
-                  </div>
-                  <div className="mt-1 h-2.5 w-full overflow-hidden rounded-full border-2 border-border bg-background-subtle" aria-hidden>
-                    <div style={{ width: `${share}%` }} className={`h-full ${fill}`} />
-                  </div>
-                </div>
-              ))}
-            </dl>
+        {/* Problems solved: open bars */}
+        <Reveal delay={0.05}>
+          <div className="flex items-baseline justify-between gap-4 border-b-[3px] border-border pb-3">
+            <h3 className="text-lg font-extrabold tracking-tight text-foreground">
+              {coding.total} problems solved
+            </h3>
+            <span className="font-mono text-xs text-foreground-muted">
+              {coding.contestsCount} contests
+            </span>
           </div>
-
+          <dl className="mt-4 flex flex-col gap-3">
+            {[
+              ["Easy", coding.easy, easyPct, "bg-mint"],
+              ["Medium", coding.medium, mediumPct, "bg-accent"],
+              ["Hard", coding.hard, hardPct, "bg-pink"],
+            ].map(([label, n, share, fill]) => (
+              <div key={label as string}>
+                <div className="flex items-baseline justify-between text-small">
+                  <dt className="text-foreground">{label}</dt>
+                  <dd className="font-mono text-foreground">
+                    {n} <span className="text-xs text-foreground-muted">{share}%</span>
+                  </dd>
+                </div>
+                <div
+                  className="mt-1 h-2.5 w-full overflow-hidden rounded-full border-2 border-border bg-surface"
+                  aria-hidden
+                >
+                  <div style={{ width: `${share}%` }} className={`h-full ${fill}`} />
+                </div>
+              </div>
+            ))}
+          </dl>
           <a
             href={coding.profileUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="group mt-4 inline-flex items-center gap-1.5 font-mono text-xs text-foreground-muted transition-colors hover:text-accent"
+            className="mt-4 inline-flex min-h-11 items-center gap-1.5 font-mono text-xs text-foreground underline underline-offset-4 transition-colors hover:text-accent"
           >
-            <span>LeetCode, Code360, GfG & CodeChef · via Codolio · as of {coding.capturedAt}</span>
-            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+            <span>
+              {coding.activeDays} coding days · {coding.longestStreak} streak · LeetCode, Code360, GfG &
+              CodeChef via Codolio
+            </span>
+            <ArrowUpRight className="h-3.5 w-3.5 shrink-0" aria-hidden />
           </a>
         </Reveal>
       </div>
