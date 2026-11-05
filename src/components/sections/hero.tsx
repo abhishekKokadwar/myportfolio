@@ -27,11 +27,8 @@ export function Hero({
     .replace(/^Currently\s+Building\s*[-—:]*\s*/i, "");
 
   const lastCommit = stats?.latestCommit || stats?.recentCommits?.[0];
-  const totalContributions = stats?.contributions?.total ?? 435;
-  const sparklineBars =
-    stats?.weeklySparkline && stats.weeklySparkline.length > 0
-      ? stats.weeklySparkline.slice(-52)
-      : [3, 0, 0, 0, 2, 8, 10, 25, 8, 0, 1, 0, 1, 6, 24, 1, 3, 0, 1, 0, 0, 26, 43, 0, 0, 0, 2, 8, 3, 6, 1, 4, 0, 0, 8, 11, 19, 15, 0, 4, 1, 5, 3, 28, 29, 33, 0, 0, 0, 7, 6, 7, 73].slice(-52);
+  const totalContributions = stats?.contributions?.total;
+  const sparklineBars = (stats?.weeklySparkline ?? []).slice(-52);
   const maxWeekly = Math.max(1, ...sparklineBars);
   const updatedAt = stats?.updatedAt ? formatStamp(stats.updatedAt) : "—";
 
@@ -46,7 +43,7 @@ export function Hero({
             </p>
             <h1 className="text-5xl font-extrabold leading-[1] tracking-tight text-foreground sm:text-6xl md:text-7xl">
               {siteConfig.name.split(" ")[0]}{" "}
-              <span className="pop-title -rotate-2 bg-pink px-3 shadow-[5px_5px_0_var(--color-border)]">
+              <span className="pop-title -rotate-2 bg-pink px-3 shadow-[5px_5px_0_var(--color-border)] transition-transform duration-200 ease-out hover:rotate-0">
                 {siteConfig.name.split(" ").slice(1).join(" ")}
               </span>
             </h1>
@@ -75,7 +72,7 @@ export function Hero({
               </a>
               <EmailAction
                 aria-label="Copy email address"
-                className="group inline-flex items-center gap-2 font-mono text-small text-foreground-muted transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded px-1.5 py-1"
+                className="group inline-flex min-h-11 items-center gap-2 font-mono text-small text-foreground-muted transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded px-1.5 py-1"
               >
                 <span className="underline decoration-foreground underline-offset-4 transition-colors group-hover:decoration-accent">
                   {siteConfig.email}
@@ -86,7 +83,7 @@ export function Hero({
 
           {/* Right 5 Columns: Activity Telemetry Panel */}
           <div className="lg:col-span-5 w-full">
-            <div className="pop-card relative p-5 sm:p-6 lg:rotate-[1.5deg] shadow-[8px_8px_0_var(--color-border)]">
+            <div className="pop-card relative p-5 sm:p-6 lg:rotate-[1.5deg] lg:transition-transform lg:duration-200 lg:ease-out lg:hover:rotate-0 shadow-[8px_8px_0_var(--color-border)]">
               {/* Header: Title + Honest Mono Timestamp (no fake green dot) */}
               <div className="flex items-center justify-between border-b-[3px] border-border pb-3.5">
                 <div className="flex items-center gap-2">
@@ -160,7 +157,7 @@ export function Hero({
                     </span>
                     <div className="flex items-baseline gap-1.5">
                       <span className="font-mono text-small font-semibold text-foreground">
-                        {totalContributions.toLocaleString()}
+                        {totalContributions !== undefined ? totalContributions.toLocaleString() : "—"}
                       </span>
                       <span className="text-xs text-foreground-muted">
                         contributions
@@ -172,7 +169,7 @@ export function Hero({
                   <div
                     className="flex h-8 items-end gap-[3px] rounded-md bg-background-subtle px-2 py-1.5 border-2 border-border"
                     role="img"
-                    aria-label={`${totalContributions} contributions across 52 weeks`}
+                    aria-label={`${totalContributions ?? "No"} contributions across 52 weeks`}
                   >
                     {sparklineBars.map((count, i) => {
                       const heightPct =

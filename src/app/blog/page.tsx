@@ -18,12 +18,12 @@ export default async function BlogIndexPage() {
 
   return (
     <>
-    <Nav blogHref="/blog" />
+    <Nav />
     <main className="px-6 py-16 md:px-12 md:py-24">
       <div className="mx-auto w-full max-w-4xl">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-small text-foreground-muted transition-colors hover:text-accent"
+          className="inline-flex min-h-11 items-center gap-2 text-small text-foreground-muted transition-colors hover:text-accent"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden />
           cd ..

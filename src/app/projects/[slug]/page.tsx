@@ -7,11 +7,27 @@ import { projectBySlugQuery, projectNavQuery } from "@/sanity/queries";
 import { urlForImage } from "@/lib/sanity-image";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/sections/footer";
-import { getAllPosts, extractSanityToc } from "@/lib/blog";
+import { extractSanityToc } from "@/lib/blog";
+import type { Metadata } from "next";
 import { PortableTextRenderer } from "@/components/blog/portable-text";
 import { TableOfContents } from "@/components/blog/table-of-contents";
 
 export const revalidate = 3600;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await sanityFetch<any>({
+    query: projectBySlugQuery,
+    params: { slug },
+    tags: ["project"],
+  });
+  if (!project) return {};
+  return { title: project.title, description: project.description };
+}
 
 const FALLBACK_IMAGES: Record<string, string[]> = {
   "mcp-zero-trust-security-gateway": ["/projects/mcp-zero-trust.jpg"],
@@ -31,13 +47,12 @@ export default async function ProjectCaseStudyPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [project, posts, all] = await Promise.all([
+  const [project, all] = await Promise.all([
     sanityFetch<any>({
       query: projectBySlugQuery,
       params: { slug },
       tags: ["project"],
     }),
-    getAllPosts(),
     sanityFetch<{ title: string; slug: string }[]>({
       query: projectNavQuery,
       tags: ["project"],
@@ -63,8 +78,8 @@ export default async function ProjectCaseStudyPage({
 
   return (
     <>
-      <Nav blogHref={posts[0] ? `/blog/${posts[0].slug}` : "/blog"} />
-      <main className="mx-auto w-full max-w-6xl px-6 pb-20 pt-8 md:px-12 md:pt-12">
+      <Nav />
+      <main id="main" tabIndex={-1} className="mx-auto w-full max-w-6xl px-6 pb-20 pt-8 outline-none md:px-12 md:pt-12">
         <Link
           href="/#projects"
           className="group inline-flex min-h-11 items-center gap-2 font-mono text-small font-medium text-foreground transition-colors hover:text-accent"

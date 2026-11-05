@@ -92,9 +92,13 @@ export function OpenSource({ data = [] }: { data?: Contribution[] }) {
       </div>
 
       {/* Three headline fixes */}
-      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {featured.map((c, i) => (
-          <Reveal key={c._id} delay={i * 0.05}>
+          <Reveal
+            key={c._id}
+            delay={i * 0.05}
+            className={i === 2 ? "md:col-span-2 lg:col-span-1" : undefined}
+          >
             <a
               href={c.url}
               target="_blank"
@@ -107,7 +111,7 @@ export function OpenSource({ data = [] }: { data?: Contribution[] }) {
                 </span>
                 <ArrowUpRight className="h-4 w-4 shrink-0 text-foreground" aria-hidden />
               </div>
-              <p className="mt-3 truncate font-mono text-xs text-foreground-muted">
+              <p className="mt-3 break-words font-mono text-xs text-foreground-muted">
                 {c.repo} #{c.number}
               </p>
               <h3 className="mt-1 text-body font-extrabold leading-snug tracking-tight text-foreground">
@@ -142,10 +146,10 @@ export function OpenSource({ data = [] }: { data?: Contribution[] }) {
                         href={c.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-baseline gap-2 text-small text-foreground transition-colors hover:text-accent"
+                        className="flex min-h-11 items-center gap-2 text-small text-foreground transition-colors hover:text-accent"
                       >
                         <span className="shrink-0 font-mono text-xs text-foreground-muted">#{c.number}</span>
-                        <span className="truncate">{clean(c.title)}</span>
+                        <span className="min-w-0 break-words">{clean(c.title)}</span>
                       </a>
                     </li>
                   ))}

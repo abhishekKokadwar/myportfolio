@@ -56,9 +56,9 @@ export default async function BlogPostPage({
   return (
     <>
       <ReadingProgress />
-      <Nav blogHref="/blog" />
+      <Nav />
 
-      <article className="px-4 py-8 sm:px-6 md:px-12 md:py-14">
+      <main id="main" tabIndex={-1} className="outline-none"><article className="px-4 py-8 sm:px-6 md:px-12 md:py-14">
         <div className="mx-auto w-full max-w-6xl">
           <Link
             href="/blog"
@@ -146,7 +146,7 @@ export default async function BlogPostPage({
             </aside>
           </div>
         </div>
-      </article>
+      </article></main>
     </>
   );
 }

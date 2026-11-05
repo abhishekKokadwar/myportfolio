@@ -43,7 +43,7 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
             <a
               href={`#${item.id}`}
               className={cn(
-                "-ml-[2px] block border-l-[3px] py-1 transition-colors",
+                "-ml-[2px] block border-l-[3px] py-2.5 transition-colors",
                 item.level === 3 ? "pl-6" : "pl-4",
                 activeId === item.id
                   ? "border-accent font-bold text-foreground"

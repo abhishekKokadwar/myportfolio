@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, DM_Mono } from "next/font/google";
 import { ThemeProvider, themeInitScript } from "@/components/theme/theme-provider";
+import { SITE_URL } from "@/lib/site-url";
 import "./globals.css";
 
 const sans = Bricolage_Grotesque({
@@ -14,8 +15,6 @@ const mono = DM_Mono({
   weight: ["400", "500"],
 });
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://abhishekkokadwar.com";
 
 const title = "Abhishek Kokadwar — Software Engineer";
 const description =

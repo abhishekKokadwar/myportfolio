@@ -10,7 +10,7 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
-// Per-post OG card with the post title, matching the site's dark palette.
+// Per-post OG card with the post title, in the site's Pop theme.
 export default async function PostOgImage({
   params,
 }: {
@@ -30,52 +30,58 @@ export default async function PostOgImage({
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#0a0a0b",
-          padding: "80px",
+          background: "#ffe45c",
+          padding: "64px",
           fontFamily: "sans-serif",
+          color: "#111111",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "16px",
-            color: "#a1a1aa",
-            fontSize: "28px",
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-          }}
-        >
-          <div style={{ width: "48px", height: "4px", background: "#34d399" }} />
-          Writing
+        <div style={{ display: "flex", fontSize: "28px", fontWeight: 700 }}>
+          <div
+            style={{
+              display: "flex",
+              background: "#111111",
+              color: "#ffe45c",
+              padding: "8px 20px",
+              borderRadius: "14px",
+            }}
+          >
+            Abhishek.
+          </div>
         </div>
 
         <div
           style={{
             display: "flex",
-            fontSize: title.length > 48 ? "64px" : "80px",
-            fontWeight: 700,
-            color: "#f2f2f3",
+            background: "#ffffff",
+            border: "6px solid #111111",
+            borderRadius: "28px",
+            boxShadow: "12px 12px 0 #111111",
+            padding: "44px 52px",
+            fontSize: title.length > 48 ? "60px" : "74px",
+            fontWeight: 800,
             letterSpacing: "-0.03em",
-            lineHeight: 1.1,
+            lineHeight: 1.08,
           }}
         >
           {title}
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "20px",
-            fontSize: "30px",
-            color: "#a1a1aa",
-          }}
-        >
-          <span style={{ color: "#34d399", fontWeight: 600 }}>
-            Abhishek Kokadwar
-          </span>
-          {readingTime ? <span>· {readingTime} min read</span> : null}
+        <div style={{ display: "flex", alignItems: "center", gap: "20px", fontSize: "28px", fontWeight: 600 }}>
+          <span>Abhishek Kokadwar</span>
+          {readingTime ? (
+            <span
+              style={{
+                display: "flex",
+                background: "#7cf2c0",
+                border: "4px solid #111111",
+                borderRadius: "999px",
+                padding: "2px 18px",
+              }}
+            >
+              {readingTime} min read
+            </span>
+          ) : null}
         </div>
       </div>
     ),

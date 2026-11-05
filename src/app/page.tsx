@@ -11,7 +11,6 @@ import { LiveRefresh } from "@/components/live-refresh";
 import { getGitHubStats, mergeUnifiedContributions, type GitHubStats } from "@/lib/data/github";
 import { getCodingStats } from "@/lib/data/codolio";
 import { getAllPosts } from "@/lib/blog";
-import { buildSpotlightIndex } from "@/lib/spotlight-index";
 
 // Rebuild the page at most every 5 min (ISR) so commits and DSA stats stay fresh.
 export const revalidate = 300;
@@ -46,8 +45,6 @@ export default async function Home() {
     weeklySparkline: unified.weeklySparkline,
   };
 
-  const spotlightIndex = buildSpotlightIndex(posts, (settingsData as any)?.resumeUrl);
-
   return (
     <>
       <a
@@ -57,7 +54,7 @@ export default async function Home() {
         Skip to content
       </a>
       <LiveRefresh />
-      <Nav blogHref={posts[0] ? `/blog/${posts[0].slug}` : "/blog"} />
+      <Nav />
       <main id="main" tabIndex={-1} className="flex flex-1 flex-col outline-none">
         <Hero settings={settingsData as any} stats={stats} />
         <About

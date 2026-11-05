@@ -46,7 +46,7 @@ export function CodeBlock({
             type="button"
             onClick={copy}
             aria-label={copied ? "Copied" : "Copy code"}
-            className="inline-flex items-center gap-1.5 text-xs text-foreground-muted transition-colors hover:text-accent focus-visible:outline-none"
+            className="inline-flex min-h-11 items-center gap-1.5 px-2 text-xs text-foreground-muted transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             {copied ? (
               <>
@@ -66,7 +66,7 @@ export function CodeBlock({
           type="button"
           onClick={copy}
           aria-label={copied ? "Copied" : "Copy code"}
-          className="absolute right-3 top-3 z-10 inline-flex h-9 w-9 touch-manipulation items-center justify-center rounded-md border-2 border-border bg-surface text-foreground-muted opacity-100 backdrop-blur transition-opacity hover:text-accent focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent md:opacity-0 md:group-hover:opacity-100"
+          className="absolute right-3 top-3 z-10 inline-flex h-11 w-11 touch-manipulation items-center justify-center rounded-md border-2 border-border bg-surface text-foreground-muted opacity-100 backdrop-blur transition-opacity hover:text-accent focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent md:opacity-0 md:group-hover:opacity-100"
         >
           {copied ? (
             <Check className="h-4 w-4 text-accent" aria-hidden />

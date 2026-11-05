@@ -16,21 +16,6 @@ export const aboutQuery = groq`*[_type == "about"][0] {
   }
 }`
 
-export const journeyQuery = groq`*[_type == "journey"] | order(order asc) {
-  _id,
-  year,
-  period,
-  title,
-  summary,
-  detail,
-  tags,
-  current,
-  link {
-    label,
-    href
-  }
-}`
-
 export const experienceQuery = groq`*[_type == "experience" && defined(company)] | order(order asc) {
   _id,
   company,

@@ -14,7 +14,7 @@ export function Blog({ posts }: { posts: PostMeta[] }) {
         <SectionHeading id="blog">Blog</SectionHeading>
         <Link
           href="/blog"
-          className="mb-8 hidden shrink-0 items-center gap-1.5 text-small font-medium text-accent transition-colors hover:text-accent-hover sm:inline-flex sm:mb-10"
+          className="mb-8 hidden min-h-11 shrink-0 items-center gap-1.5 text-small font-medium text-accent transition-colors hover:text-accent-hover sm:inline-flex sm:mb-10"
         >
           All posts
           <ArrowRight className="h-4 w-4" aria-hidden />
@@ -31,7 +31,7 @@ export function Blog({ posts }: { posts: PostMeta[] }) {
 
       <Link
         href="/blog"
-        className="mt-6 inline-flex items-center gap-1.5 text-small font-medium text-accent transition-colors hover:text-accent-hover sm:hidden"
+        className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-small font-medium text-accent transition-colors hover:text-accent-hover sm:hidden"
       >
         All posts
         <ArrowRight className="h-4 w-4" aria-hidden />

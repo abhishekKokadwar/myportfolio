@@ -61,7 +61,7 @@ export function SectionHeading({
           <a
             href={`#${id}`}
             aria-label={`Link to ${id}`}
-            className="absolute -left-1 top-1/2 hidden -translate-x-full -translate-y-1/2 pr-3 font-mono text-sm font-normal text-foreground-subtle opacity-0 transition-opacity hover:text-accent group-hover/heading:opacity-100 select-none lg:block"
+            className="absolute -left-1 top-1/2 hidden pointer-coarse:!hidden -translate-x-full -translate-y-1/2 pr-3 font-mono text-sm font-normal text-foreground-subtle opacity-0 transition-opacity hover:text-accent group-hover/heading:opacity-100 select-none lg:block"
           >
             #
           </a>

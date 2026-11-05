@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { Check } from "lucide-react";
 import { siteConfig } from "@/data/site.config";
 
 /**

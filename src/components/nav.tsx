@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/data/site.config";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/brand-icons";
-import type { SpotlightItem } from "@/lib/spotlight";
 import { cn } from "@/lib/utils";
 
 // Desktop nav shows the primary sections in the centered floating pill.
@@ -81,25 +80,19 @@ function useActiveSection(ids: string[]) {
   return [active, setActive] as const;
 }
 
-export function Nav({
-  blogHref,
-}: {
-  /** Kept so pages can still pass it; search was removed from the header. */
-  spotlightIndex?: SpotlightItem[];
-  /** Where "Blog" goes. One post: straight to it. Several: the list. */
-  blogHref?: string;
-}) {
+export function Nav() {
   const pathname = usePathname();
   const onHome = pathname === "/";
   const [activeRaw, setActive] = useActiveSection(NAV_LINKS.map((l) => l.id));
   const active = onHome ? activeRaw : null;
   // Off the home page "#about" has nothing to scroll to, so go to "/#about".
-  const resolve = (l: { id: string; href: string }) =>
-    l.id === "blog" && blogHref ? blogHref : onHome ? l.href : `/${l.href}`;
+  const resolve = (l: { id: string; href: string }) => (onHome ? l.href : `/${l.href}`);
   const [menuOpen, setMenuOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
+  // Hydration guard: the mobile menu portal may only render on the client.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
 
   // Lock body scroll while mobile menu is open.
@@ -177,14 +170,14 @@ export function Nav({
       <nav className="relative mx-auto flex w-full max-w-6xl items-center justify-between px-4 sm:px-6 md:px-12">
         <Link
           href="/"
-          className="inline-block -rotate-3 rounded-xl bg-foreground px-3 py-1.5 font-mono text-sm font-bold tracking-tight text-background transition-transform duration-150 hover:rotate-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="relative inline-block -rotate-3 rounded-xl bg-foreground px-3 py-1.5 font-mono before:absolute before:-inset-x-1 before:-inset-y-1.5 before:content-['']  text-sm font-bold tracking-tight text-background transition-transform duration-150 hover:rotate-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           {siteConfig.name.split(" ")[0]}
           <span className="text-pink">.</span>
         </Link>
 
         {/* Center: plain links on the bar, active one filled. Dead-centered via absolute positioning */}
-        <div className="pointer-events-auto hidden md:flex items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="pointer-events-auto absolute left-1/2 top-1/2 hidden w-max -translate-x-1/2 -translate-y-1/2 items-center md:flex">
           <ul className="flex items-center gap-1">
             {DESKTOP_LINKS.map((link) => {
               const isActive = active === link.id;
@@ -195,7 +188,7 @@ export function Nav({
                     onClick={(e) => handleNavClick(e, resolve(link))}
                     aria-current={isActive ? "true" : undefined}
                     className={cn(
-                      "inline-flex h-9 items-center justify-center rounded-full px-3.5 font-mono text-xs font-medium leading-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                      "inline-flex h-11 items-center justify-center whitespace-nowrap rounded-full px-3 lg:px-3.5 font-mono text-xs font-medium leading-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
                       isActive
                         ? "bg-accent text-accent-foreground"
                         : "text-foreground underline-offset-4 hover:underline"

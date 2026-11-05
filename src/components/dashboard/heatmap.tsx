@@ -181,21 +181,13 @@ export function Heatmap({
         ].map(([v, l], i) => stat(v, l, i))}
       </div>
 
-      <div className="pop-card p-4">
+      <div className="pop-card p-5">
       {/* Header: updated time + Sync button */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b-2 border-border pb-2">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b-2 border-border pb-3">
         <span className="font-mono text-xs text-foreground">
           Past 52 weeks · updated {timeLabel ? formatStamp(timeLabel) : "—"}
         </span>
 
-        <div className="flex items-center gap-3">
-        <div className="hidden items-center gap-1.5 text-xs text-foreground sm:flex" aria-hidden>
-          <span>Less</span>
-          {LEVEL_CLASS.map((cls, i) => (
-            <span key={i} className={`h-2.5 w-2.5 rounded-[2px] ${cls}`} />
-          ))}
-          <span>More</span>
-        </div>
         <button
           type="button"
           onClick={syncLive}
@@ -210,21 +202,20 @@ export function Heatmap({
           />
           <span>{isSyncing ? "Syncing..." : syncStatus === "live" ? "Live" : "Sync"}</span>
         </button>
-        </div>
       </div>
 
       {/* Horizontally scrollable calendar with true calendar months */}
-      <div ref={scrollRef} className="pop-scroll mt-3 overflow-x-auto pb-2.5">
+      <div ref={scrollRef} className="pop-scroll mt-4 overflow-x-auto pb-3">
         <div className="mx-auto flex min-w-max items-start">
           {/* Day of week labels on left (Mon, Wed, Fri) aligned with 7 dot rows */}
-          <div className="w-7 shrink-0 flex flex-col font-mono text-xs text-foreground-subtle select-none">
+          <div className="w-7 sm:w-8 shrink-0 flex flex-col font-mono text-xs text-foreground-subtle select-none">
             {/* Header spacer to match month labels row height */}
-            <div className="mb-1 h-4" />
-            <div className="flex flex-col gap-[3px]">
+            <div className="mb-1.5 h-4" />
+            <div className="flex flex-col gap-1 sm:gap-1.5">
               {DAY_LABELS.map((dayLabel, idx) => (
                 <span
                   key={idx}
-                  className="h-2.5 flex items-center leading-none text-right justify-end pr-1.5"
+                  className="h-2.5 sm:h-3 flex items-center leading-none text-right justify-end pr-1.5"
                 >
                   {dayLabel}
                 </span>
@@ -234,29 +225,29 @@ export function Heatmap({
 
           {/* Month Groups with exact calendar days and centered month headers */}
           <div
-            className="flex items-start gap-1.5"
+            className="flex items-start gap-2 sm:gap-3"
             role="img"
             aria-label={`${total} contributions on GitHub`}
           >
             {calendarMonths.map((month) => (
               <div key={month.key} className="flex flex-col shrink-0">
                 {/* Month Name Header - PROPERLY CENTERED */}
-                <div className="mb-1 flex h-4 items-center justify-center text-center">
+                <div className="mb-1.5 flex h-4 items-center justify-center text-center">
                   <span className="font-mono text-xs font-medium text-foreground-subtle select-none">
                     {month.label}
                   </span>
                 </div>
 
                 {/* Week Columns of Dots for this Month */}
-                <div className="flex gap-[3px]">
+                <div className="flex gap-1 sm:gap-1.5">
                   {month.columns.map((col, colIdx) => (
-                    <div key={colIdx} className="flex flex-col gap-[3px]">
+                    <div key={colIdx} className="flex flex-col gap-1 sm:gap-1.5">
                       {col.map((day, rowIdx) => {
                         if (!day) {
                           return (
                             <span
                               key={`empty-${rowIdx}`}
-                              className="h-2.5 w-2.5 invisible pointer-events-none"
+                              className="h-2.5 sm:h-3 w-2.5 sm:w-3 invisible pointer-events-none"
                               aria-hidden="true"
                             />
                           );
@@ -288,7 +279,7 @@ export function Heatmap({
                           <span
                             key={day.date}
                             title={tooltip}
-                            className={`h-2.5 w-2.5 rounded-[2px] transition-transform hover:scale-125 ${
+                            className={`h-2.5 sm:h-3 w-2.5 sm:w-3 rounded-[2px] transition-transform hover:scale-125 ${
                               LEVEL_CLASS[day.level]
                             }`}
                           />
@@ -301,6 +292,15 @@ export function Heatmap({
             ))}
           </div>
         </div>
+      </div>
+
+      {/* Footer: Less -> More ramp */}
+      <div className="mt-4 flex items-center justify-end gap-1.5 border-t-2 border-border pt-3 text-xs text-foreground">
+        <span>Less</span>
+        {LEVEL_CLASS.map((cls, i) => (
+          <span key={i} className={`h-2.5 w-2.5 rounded-[2px] ${cls}`} />
+        ))}
+        <span>More</span>
       </div>
       </div>
     </div>
